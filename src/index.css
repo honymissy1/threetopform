@@ -1,0 +1,66 @@
+/* :root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+a{
+  text-decoration: none;
+  color: white
+}
+
+.nav {
+  background-color: rgb(21, 38, 65);
+  color: white;
+  padding: 10px;
+}
+
+.container{
+  background:rgb(175, 255, 255);
+  margin-top: 0;
+  padding: 40px 15px;
+  text-align: center;
+  min-height: 50vh;
+}
+
+.tabs {
+  padding: 10px
+}
+
+.button {
+  background-color: rgb(40,204,41);
+  color: white;
+  font-weight: bolder;
+}
+
+.container form {
+  font-weight: bolder; 
+   width: 500px;
+   margin: 0px auto
+}
+
+@media screen and (max-width: 500px){
+  .container form {
+    font-weight: bolder; 
+     width: 100%;
+     margin: 0px auto
+  }
+}
