@@ -3,7 +3,6 @@ import { Tabs } from 'antd';
 import Nav from './components/Nav';
 import { Tab } from './reducer/TabReducer';
 import { useSelector, useDispatch } from 'react-redux';
-// Components
 import GetStarted from './components/getStarted';
 import PersonalInfo from './components/PersonalInfo';
 import PassportInfo from './components/passportInfo';
