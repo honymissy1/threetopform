@@ -8,10 +8,8 @@ const ParentInfo = () => {
     const [form] = Form.useForm();
     const values = Form.useWatch([], form);
     const dispatch = useDispatch();
+    const [sameAddress, setSameAddress] = useState(true)
 
-    // const handlePrev = () => {
-    //     dispatch(Tab(2))
-    // }
     useEffect(() => {
       form.validateFields({  validateOnly: true })
         .then(() => { setSubmittable(true)},
@@ -64,25 +62,25 @@ const ParentInfo = () => {
 
             <Row justify="space-between" gutter={[10, 0]}>
                 <Col flex="50%" >
-                 <Form.Item label="Full Name" name="FullName" rules={[{  required: true }]}>    
+                 <Form.Item label="Full Name" name="motherFullName" rules={[{  required: true }]}>    
                    <Input placeholder="" />
                   </Form.Item>
                 </Col>
 
                 <Col flex="50%">
-                 <Form.Item label="Date Of Birth" name="Dob" rules={[{  required: true }]}>
+                 <Form.Item label="Date Of Birth" name="motherDob" rules={[{  required: true }]}>
                     <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
                 <Col flex="50%" >
-                    <Form.Item label="Occupation" name="occupation" rules={[{  required: true }]}>
+                    <Form.Item label="Occupation" name="motherOccupation" rules={[{  required: true }]}>
                      <Input placeholder="Work / Job" required/>
                     </Form.Item>
                 </Col>
 
                 <Col flex="50%" >
-                 <Form.Item label="Address" name="Address" rules={[{  required: true }]}>    
+                 <Form.Item label="Address" name={sameAddress ? "Address" :"motherAddress"} rules={[{  required: true }]}>    
                    <Input placeholder="" />
                   </Form.Item>
                 </Col>

@@ -8,6 +8,7 @@ import PersonalInfo from './components/PersonalInfo';
 import PassportInfo from './components/passportInfo';
 import TravelDetails from './components/travelDetails';
 import ParentInfo from './components/parentInfo';
+import Education from './components/education';
 
 const App = () => {
   const TabNumber = useSelector((state) => state.ActiveTab);
@@ -43,11 +44,11 @@ const App = () => {
         children: <TravelDetails />,
       },
 
-      // {
-      //   label: 'Education',
-      //   key: '5',
-      //   children: 'Tab 5',
-      // },
+      {
+        label: 'Education',
+        key: '5',
+        children: <Education />,
+      },
 
       // {
       //   label: 'Occupation',
