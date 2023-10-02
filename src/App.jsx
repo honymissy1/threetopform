@@ -5,10 +5,13 @@ import { Tab } from './reducer/TabReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import GetStarted from './components/getStarted';
 import PersonalInfo from './components/PersonalInfo';
-import PassportInfo from './components/passportInfo';
 import TravelDetails from './components/travelDetails';
 import ParentInfo from './components/parentInfo';
 import Education from './components/education';
+import Occupation from './components/occupation';
+import Family from './components/family';
+import FilesUpload from './components/filesUpload';
+import TravelHistory from './components/travelHistory';
 
 const App = () => {
   const TabNumber = useSelector((state) => state.ActiveTab);
@@ -32,16 +35,17 @@ const App = () => {
         key: '2',
         children: <PersonalInfo />,
       },
+
       {
-        label: 'Passport Info',
+        label: 'Application History',
         key: '3',
-        children: <PassportInfo />,
+        children: <TravelDetails />,
       },
 
       {
-        label: 'Travel Details',
+        label: 'Travel History',
         key: '4',
-        children: <TravelDetails />,
+        children: <TravelHistory />,
       },
 
       {
@@ -50,23 +54,24 @@ const App = () => {
         children: <Education />,
       },
 
-      // {
-      //   label: 'Occupation',
-      //   key: '6',
-      //   children: 'Tab 6',
-      // },
-
-      // {
-      //   label: 'Family',
-      //   key: '7',
-      //   children: 'Tab 7'
-      // },
+      {
+        label: 'Occupation / Job',
+        key: '6',
+        children: <Occupation />,
+      },
 
       {
-        label: 'Parent',
-        key: '8',
-        children: <ParentInfo />
+        label: 'Family',
+        key: '7',
+        children: <Family />
       },
+
+      {
+        label: 'File Uploads',
+        key: '8',
+        children: <FilesUpload />
+      },
+
     ]}
   />
   </>

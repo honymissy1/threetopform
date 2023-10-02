@@ -35,10 +35,15 @@ a{
 
 .container{
   background:rgb(175, 255, 255);
+  background-image: url('./assets/image.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
   margin-top: 0;
   padding: 40px 15px;
   text-align: center;
-  min-height: 50vh;
+  min-height: 100vh;
 }
 
 .tabs {
@@ -47,6 +52,7 @@ a{
 
 .button {
   background-color: rgb(40,204,41);
+  
   color: white;
   font-weight: bolder;
 }
@@ -63,4 +69,35 @@ a{
      width: 100%;
      margin: 0px auto
   }
+}
+
+.parent{
+  border-radius: 10px;
+  background: rgb(38 0 0 / 66%);
+  margin-bottom: 10px;
+  padding: 20px 20px;
+}
+
+.parent .ant-row .ant-col label{
+  color: white;
+}
+
+.parent h3{
+  color: white !important;
+}
+
+.family {
+  border-radius: 10px;
+  background: rgb(35 33 30 / 95%);
+  margin-bottom: 10px !important;
+  padding: 20px 20px;
+}
+
+.family .ant-row .ant-col label{
+  color: white;
+}
+
+.ant-form h3{
+  color: rgb(229, 218, 218);
+  margin-bottom: 40px !important
 }

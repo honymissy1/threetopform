@@ -1,22 +1,46 @@
 import {Select, Button, Form, Input, Space, Typography, DatePicker, Row, Col, Modal } from 'antd';
-import {useState} from 'react'
+import {useState, useEffect} from 'react';
+import { useDispatch } from 'react-redux';
+import { Tab } from '../reducer/TabReducer';
+    
 
 const Education = () =>{
     const [form] = Form.useForm();
     const formValues = Form.useWatch([], form);
+
+    const [modal] = Form.useForm();
+    const modalValues = Form.useWatch([], modal);
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { Title } = Typography;
+    const [submittable, setSubmittable] = useState(false);
+    const dispatch = useDispatch();
 
+    const [educationList, setEducationList] = useState([])
 
     const { RangePicker } = DatePicker;
     const certs = (x) =>{
        if(x === 'Yes'){
-        console.log('Ok');
-        setIsModalOpen(true)
+        setIsModalOpen(true);
+
+        modal.validateFields({  validateOnly: true })
+        .then(() => { setSubmittable(true)},
+          () => {
+            setSubmittable(false);
+          });
        }else{
         console.log('Move');
        }
     }
+
+    useEffect(() => {
+      form.validateFields({  validateOnly: true })
+        .then(() => { setSubmittable(true)},
+          () => {
+            setSubmittable(false);
+          });
+    }, [formValues]);
 
     // Modal Functions
     const openModal = () =>{
@@ -26,11 +50,32 @@ const Education = () =>{
       const handleOk = () => {
         setIsModalOpen(false);
         console.log(formValues);
-        form.resetFields()
+        modal.validateFields({  validateOnly: true })
+        .then(() => {
+           setSubmittable(true)
+
+          //  Send Data to the Database -> Firestore
+          //  Sending data to the array of education object
+          console.log(modalValues);
+          // If it's successful then give the use a prompt of the success
+           modal.resetFields()
+          },
+          () => {
+            setSubmittable(false);
+            alert('Complete the required form')
+          });
       }
 
       const handleCancel = () =>{
         setIsModalOpen(false);
+      }
+
+      const handlePrev = () =>{
+        dispatch(Tab(3))
+      }
+
+      const handleNext = () => {
+        dispatch(Tab(5))
       }
 
 
@@ -70,11 +115,11 @@ const Education = () =>{
        <Modal title="Education" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
           {
             formValues?.isEducated === "Yes" && (
-                <Form form={form} layout="vertical">
+                <Form form={modal} layout="vertical">
                     <Row justify="space-between" gutter={[10, 0]}>
 
                 <Col flex="100%">
-                    <Form.Item name="Name of School / Instition" label="Country">
+                    <Form.Item name="Instition" label="Country">
                         <Input placeholder="School" />
                     </Form.Item>
                 </Col>
@@ -114,9 +159,9 @@ const Education = () =>{
                     </Form.Item>
                     </Col>
                         {
-                            formValues?.certification === "Secondary School" || formValues?.certification !== "Primary School"  && (
+                            modalValues?.certification === "Secondary School" || formValues?.certification !== "Primary School"  && (
                             <Col flex="50%">
-                                <Form.Item name="Course" label="Course of Study">
+                                <Form.Item name="Course" label="Course of Study" rules={[{  required: true }]}>
                                 <Input placeholder="Course" />
                                 </Form.Item>
                             </Col>
@@ -125,8 +170,8 @@ const Education = () =>{
                         }
 
                     <Col flex="40%">
-                        <Form.Item name="" label="Select Year"  rules={[{  required: true }]}>
-                         <RangePicker /> 
+                        <Form.Item name="" tooltip="From the beginning of the academic programme to the end" label="Select Year"  rules={[{  required: true }]}>
+                          <RangePicker /> 
                         </Form.Item>
                     </Col>
 
@@ -141,8 +186,7 @@ const Education = () =>{
         {
           formValues?.isEducated === "Yes" && (
             <div>
-              <h1>Table here</h1>
-              <button onClick={openModal}>Add More travel history</button>
+              <Button onClick={openModal} type="dashed">+ More Education</Button>
             </div>
           )
         }
@@ -150,11 +194,11 @@ const Education = () =>{
 
 
         <Row justify="space-between">
-            {/* <Col>
+            <Col>
               <Button onClick={handlePrev} className='button'>Prev</Button>
             </Col>
 
-            <Col><Button onClick={handleNext} disabled={!submittable} htmlType="submit" className='button'>Next</Button></Col> */}
+            <Col><Button onClick={handleNext} disabled={!submittable} htmlType="submit" className='button'>Next</Button></Col>
         </Row>
         </Form>
     </div>

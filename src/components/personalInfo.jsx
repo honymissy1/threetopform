@@ -7,7 +7,7 @@ const PersonalInfo = () => {
     const [submittable, setSubmittable] = useState(false);
     const [form] = Form.useForm();
     const values = Form.useWatch([], form);
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();                   
 
     // const handlePrev = () => {
     //     dispatch(Tab(2))
@@ -21,7 +21,8 @@ const PersonalInfo = () => {
     }, [values]);
 
       const handleNext = () =>{
-        dispatch(Tab(3))
+        // dispatch(Tab(3))
+        console.log(values);
       }
      const handlePrev = () => {
         dispatch(Tab(1))
@@ -72,12 +73,39 @@ const PersonalInfo = () => {
                    </Select>
                   </Form.Item>
                 </Col>
+            </Row>
+
+            <Row justify="space-between" gutter={[10, 0]}>
+                <Col flex="50%" >
+                 <Form.Item name="Passport Number" label="Passport No" rules={[{  required: true }]}>
+                   <Input />
+                  </Form.Item>
+                </Col>
+
+                <Col flex="50%" >
+                    <Form.Item name="placeofBirth" label="City of Birth"  rules={[{  required: true }]}>
+                     <Input placeholder="" />
+                    </Form.Item>
+                </Col>
+
+                <Col flex="50%">
+                 <Form.Item label="Passport Issue Date" name="issueDate">
+                    <DatePicker style={{width: '100%'}} placeholder='Issue Date' />
+                  </Form.Item>
+                </Col>
+
+                <Col flex="50%">
+                 <Form.Item label="Passport Expiry Date" name="expiryDate">
+                    <DatePicker style={{width: '100%'}} placeholder='Expiry Date' />
+                  </Form.Item>
+                </Col>
 
                 <Col flex="100%" >
                   <Form.Item label="Address" rules={[{  required: true }]} name="Address">
                    <Input placeholder="" />
                   </Form.Item>
                 </Col>
+
             </Row>
 
             <Row justify="space-between">
@@ -88,6 +116,8 @@ const PersonalInfo = () => {
                 <Col>
                   <Button onClick={handleNext} htmlType="submit" className='button' disabled={!submittable}>Next</Button>
                 </Col>
+
+
             </Row>
             </Form>
         </div>

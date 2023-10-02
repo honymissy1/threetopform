@@ -1,10 +1,12 @@
-import {Select, Radio, Table, Button, Typography, Form, Input, Space, DatePicker, Row, Col, Modal } from 'antd';
+import {Select,  Table, Button, Typography, Form, Input, Space, DatePicker, Row, Col, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Tab } from '../reducer/TabReducer';
 const { TextArea } = Input;
+const { RangePicker } = DatePicker;
 
-const TravelDetails = () => {
+const TravelHistory = () => {
+
     const [form] = Form.useForm();
     const [extra] = Form.useForm();
     const { Title } = Typography;
@@ -56,8 +58,6 @@ const TravelDetails = () => {
           setSubmittable(true);
           setTravelList([...travelList, {
             country: extraValues.country,
-            applicationDate: extraValues.applicationDate,
-            status: extraValues.applicationStatus
           }]);
           extra.resetFields()
         })
@@ -104,7 +104,7 @@ const TravelDetails = () => {
             <Form form={form} layout="vertical">
             {/* Modal */}
 
-            <Form.Item style={{width: '500px', margin: "0px auto"}} layout="vertical" name="hasApplied" label="Have you ever applied for a visa" rules={[{  required: true }]}>
+            <Form.Item style={{width: '100%', margin: "0px auto"}} layout="vertical" name="hasTravelled" label="Have you ever travelled outside Nigeria" rules={[{  required: true }]}>
                 <Select onSelect={travelBefore}
                         defaultValue={"No"}
                         style={{  width: "100%", textAlign: 'left' }} 
@@ -125,85 +125,42 @@ const TravelDetails = () => {
               <Form form={extra} layout="vertical">
                 <Row justify="space-between" gutter={[10, 0]}>
 
-              <Col flex="30%">
-                  <Form.Item name="country" label="Country" rules={[{  required: true }]}>
-                    <Input placeholder="Country" />
-                  </Form.Item>
-              </Col>
-
-              <Col flex="40%">
-                  <Form.Item name="applicationDate" label="Date">
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Application' />
-                  </Form.Item>
-              </Col>
-
-              <Col flex="30%">
-              <Form.Item name="applicationStatus" label="Status" rules={[{ required: true }]}>
-              <Select
-                  style={{  width: "100%", textAlign: 'left' }} 
-                  options={[
-                      {
-                        value: 'Approved',
-                        label: 'Approved',
-                        },
-                        {
-                          value: 'Denied',
-                          label: 'Denied',
-                        }
-                  ]}
-                ></Select>
-                </Form.Item>
-              </Col>
-                </Row>
-              {
-                extraValues?.applicationStatus === "Approved" && (
-                  <Row gutter={[10, 0]}>
                     <Col flex="50%">
-                      <Form.Item name="issueDate" label="Issue Date"  rules={[{  required: true }]}>
-                        <DatePicker style={{width: '100%'}} placeholder='Issue Date' />
-                      </Form.Item>
+                        <Form.Item name="country" label="Country" rules={[{  required: true }]}>
+                            <Input placeholder="Country" />
+                        </Form.Item>
                     </Col>
 
                     <Col flex="50%">
-                      <Form.Item name="expiryDate" label="Expiry Date"  rules={[{  required: true }]}>
-                        <DatePicker style={{width: '100%'}} placeholder='Expiry Date' />
-                      </Form.Item>
+                        <Form.Item name="purpose" label="Purpose of Travel" rules={[{  required: true }]}>
+                            <Input placeholder="Purpose of Travel" />
+                        </Form.Item>
                     </Col>
-                  </Row>
-                )
-              }
-              {
-              extraValues?.applicationStatus === "Denied" && (
-                <Row gutter={[0, 10]}>
-                  <Col flex="100%">
-                      <Form.Item name="issueDate" label="Denial Date">
-                        <DatePicker style={{width: '100%'}} placeholder='Denial Date' />
-                      </Form.Item>
-                  </Col>
-                  <Col flex="100%"> 
-                    <Form.Item name="denialReason" label="Reason for Denial" rules={[{  required: true }]}>
-                      <TextArea
-                          autoSize={{ minRows: 3, maxRows: 5 }}
-                      />
-                    </Form.Item>
-                  </Col>
 
+                    
+                    <Col flex="50%">
+                        <Form.Item name="duration" label="Duration" rules={[{  required: true }]}>
+                           <RangePicker />
+                        </Form.Item>
+                    </Col>
+
+                    
+
+ 
                 </Row>
 
-              )
-            }
               </Form>
             </Modal>
 
             {/* Table of application */}
             {
-              formValues?.hasApplied === 'Yes' && (
-                <Button onClick={openModal} type="dashed" style={{ margin: "10px 0px"}}>+ Other Application</Button>
+              formValues?.hasTravelled === 'Yes' && (
+                <Button onClick={openModal} type="dashed" style={{ margin: "10px 0px"}}>+ Add Travel</Button>
               )
             }
 
             {
-             (formValues?.hasApplied === "Yes" && travelList.length > 0) && (
+             (formValues?.hasTravelled === "Yes" && travelList.length > 0) && (
                 <div>
                  <Table columns={[
                     {
@@ -256,4 +213,4 @@ const TravelDetails = () => {
     )
 }
 
-export default TravelDetails;
+export default TravelHistory;
