@@ -21,7 +21,7 @@ const PersonalInfo = () => {
     }, [values]);
 
       const handleNext = () =>{
-        // dispatch(Tab(3))
+        dispatch(Tab(3))
         console.log(values);
       }
      const handlePrev = () => {

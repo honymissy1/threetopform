@@ -19,14 +19,14 @@ const TravelDetails = () => {
 
 
     const handlePrev = () => {
-        dispatch(Tab(3))
+        dispatch(Tab(2))
     }
 
     useEffect(() =>{
-       if(formValues?.travels === "No") {
-        setSubmittable(true)
+       if(formValues?.hasApplied === "No") {
+         setSubmittable(true)
       }
-    }, [])
+    }, [formValues])
 
     useEffect(() => {
       extra.validateFields({  validateOnly: true  })
@@ -39,7 +39,7 @@ const TravelDetails = () => {
     }, [formValues]);
 
       const handleNext = () =>{
-        dispatch(Tab(8))
+        dispatch(Tab(4))
       }
 
       // Modal Functions
@@ -86,6 +86,13 @@ const TravelDetails = () => {
           setValue(e);
           setTravelList([])
           console.log(travelList);
+          form.validateFields({  validateOnly: true  })
+          .then((x) => {  
+            setSubmittable(true)
+          })
+          .catch(err => {
+            setSubmittable(false)
+          })
         }
       }
 
@@ -104,7 +111,7 @@ const TravelDetails = () => {
             <Form form={form} layout="vertical">
             {/* Modal */}
 
-            <Form.Item style={{width: '500px', margin: "0px auto"}} layout="vertical" name="hasApplied" label="Have you ever applied for a visa" rules={[{  required: true }]}>
+            <Form.Item style={{ margin: "0px auto"}} layout="vertical" name="hasApplied" label="Have you ever applied for a visa" rules={[{  required: true }]}>
                 <Select onSelect={travelBefore}
                         defaultValue={"No"}
                         style={{  width: "100%", textAlign: 'left' }} 
