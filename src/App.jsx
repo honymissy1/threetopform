@@ -4,9 +4,9 @@ import Nav from './components/Nav';
 import { Tab } from './reducer/TabReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import GetStarted from './components/getStarted';
-import PersonalInfo from './components/PersonalInfo';
+import PersonalInfo from './components/personalInfo';
 import TravelDetails from './components/travelDetails';
-import ParentInfo from './components/parentInfo';
+// import ParentInfo from './components/parentInfo';
 import Education from './components/education';
 import Occupation from './components/occupation';
 import Family from './components/family';
@@ -33,7 +33,7 @@ const App = () => {
       {
         label: 'Personal Profile',
         key: '2',
-        children: <PersonalInfo />,
+        children: <PersonalInfo />
       },
 
       {
