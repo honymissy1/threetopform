@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Tab } from '../reducer/TabReducer';
 const PersonalInfo = () => {
-    const { Title, Text } = Typography;
+    const { Title } = Typography;
     const [submittable, setSubmittable] = useState(false);
     const [form] = Form.useForm();
     const values = Form.useWatch([], form);

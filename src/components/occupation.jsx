@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 
 import { useDispatch } from 'react-redux';
 import { Tab } from '../reducer/TabReducer'
-
+const { RangePicker } = DatePicker;
 const Occupation = () =>{
     const dispatch = useDispatch()
     const [form] = Form.useForm();
@@ -30,8 +30,9 @@ const Occupation = () =>{
 
     }, [formValues])
 
-    const { RangePicker } = DatePicker;
+
     const handleWork = (x) =>{
+      setIsModalOpen(true)
        if(x === 'Yes'){
         modal.validateFields({  validateOnly: true })
         .then(() => { setSubmittable(true)},
@@ -62,8 +63,13 @@ const Occupation = () =>{
            }])
            modal.resetFields();
         },
-          () => {
-            setSubmittable(false);
+          () => {     
+            alert('Fill required fields')
+            if(occupationList.length > 0){
+               setSubmittable(true);
+            }else{
+              setSubmittable(false);
+            }
           });
       }
 
@@ -89,10 +95,10 @@ const Occupation = () =>{
         <Form form={form} layout="vertical">
         <Row justify="space-between" gutter={[10, 0]}>
             <Col flex="100%" >
-              <Form.Item name="workHistory" label="Do you have any formal education" rules={[{  required: true }]}>
+              <Form.Item name="workHistory" label="Are you working / Business" rules={[{  required: true }]}>
               <Select
                 initialvalues={""}
-                onChange={handleWork}
+                onSelect={handleWork}
                 style={{  width: "100%", textAlign: 'left' }} 
                   options={[
                       {
@@ -133,8 +139,8 @@ const Occupation = () =>{
                 </Col>
 
                 <Col flex="50%">
-                    <Form.Item name="jobTitle" label="Job Description" rules={[{  required: true }]} tooltip="What you do in the Job e.g As a sales manager I ensure better sale">
-                        <Input placeholder="Sales Rep" />
+                    <Form.Item name="jobTitle" label="Description" rules={[{  required: true }]} tooltip="What you do in the Job e.g As a sales manager I ensure better sale">
+                        <Input placeholder="I manage sales in the company" />
                     </Form.Item>
 
                </Col>

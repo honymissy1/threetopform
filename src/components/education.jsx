@@ -29,8 +29,6 @@ const Education = () =>{
           () => {
             setSubmittable(false);
           });
-       }else{
-        console.log('Move');
        }
     }
 
@@ -40,7 +38,7 @@ const Education = () =>{
           () => {
             setSubmittable(false);
           });
-    }, [formValues]);
+    }, [formValues, modalValues]);
 
     // Modal Functions
     const openModal = () =>{
@@ -49,25 +47,42 @@ const Education = () =>{
 
       const handleOk = () => {
         setIsModalOpen(false);
-        console.log(formValues);
+
         modal.validateFields({  validateOnly: true })
         .then(() => {
-           setSubmittable(true)
-
+          setSubmittable(true);
+           setEducationList([...educationList, modalValues])
           //  Send Data to the Database -> Firestore
           //  Sending data to the array of education object
-          console.log(modalValues);
           // If it's successful then give the use a prompt of the success
-           modal.resetFields()
+          
+          modal.resetFields()
           },
           () => {
-            setSubmittable(false);
-            alert('Complete the required form')
+            alert('Fill required fields')
+            if(educationList.length > 0){
+               setSubmittable(true);
+            }else{
+              setSubmittable(false);
+            }
           });
       }
 
       const handleCancel = () =>{
         setIsModalOpen(false);
+
+        // modal.validateFields({  validateOnly: true })
+        // .then(() => { 
+        //   setSubmittable(true)
+        // },
+        //   () => {
+        //     setSubmittable(false);
+        //     if(educationList.length > 0){
+        //       setSubmittable(true);
+        //     }
+        //   });
+
+
       }
 
       const handlePrev = () =>{
@@ -132,10 +147,6 @@ const Education = () =>{
                         
                         options={[
                             {
-                            value: 'Primary School',
-                            label: 'Primary School',
-                            },
-                            {
                                 value: 'Secondary School',
                                 label: 'Secondary School',
                             },
@@ -144,8 +155,8 @@ const Education = () =>{
                                 label: "Banchelor's Degree",
                             },
                             {
-                                value: "Msc",
-                                label: "Msc",
+                                value: "Masters",
+                                label: "Masters",
                             },
                             {
                                 value: "PhD",

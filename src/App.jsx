@@ -5,13 +5,13 @@ import { Tab } from './reducer/TabReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import GetStarted from './components/getStarted';
 import PersonalInfo from './components/personalInfo';
-import TravelDetails from './components/travelDetails';
-// import ParentInfo from './components/parentInfo';
+// import TravelDetails from './components/travelDetails';
 import Education from './components/education';
 import Occupation from './components/occupation';
 import Family from './components/family';
 import FilesUpload from './components/filesUpload';
 import TravelHistory from './components/travelHistory';
+import ApplicationHistory from './components/applicationHistory';
 
 const App = () => {
   const TabNumber = useSelector((state) => state.ActiveTab);
@@ -39,7 +39,7 @@ const App = () => {
       {
         label: 'Application History',
         key: '3',
-        children: <TravelDetails />,
+        children: <ApplicationHistory />,
       },
 
       {

@@ -1,18 +1,21 @@
-import {Select, Radio, Table, Button, Typography, Form, Input, Space, DatePicker, Row, Col, Modal } from 'antd';
+import {Select, Radio, Table, Button, Typography, Form, Input,  DatePicker, Row, Col, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Tab } from '../reducer/TabReducer';
 const { TextArea } = Input;
+const { Title } = Typography;
 
-const TravelDetails = () => {
+const ApplicationHistory = () => {
     const [form] = Form.useForm();
     const [extra] = Form.useForm();
-    const { Title } = Typography;
+    const formValues = Form.useWatch([], form);
+    const extraValues = Form.useWatch([], extra);
+
+    // -------------------------------------------------------------
+
     const [value, setValue] = useState(false);
     const [submittable, setSubmittable] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const formValues = Form.useWatch([], form);
-    const extraValues = Form.useWatch([], extra);
 
     const [travelList, setTravelList] = useState([])
     const dispatch = useDispatch();
@@ -26,6 +29,7 @@ const TravelDetails = () => {
        if(formValues?.hasApplied === "No") {
          setSubmittable(true)
       }
+
     }, [formValues])
 
     useEffect(() => {
@@ -36,7 +40,9 @@ const TravelDetails = () => {
         .catch(err => {
           setSubmittable(false)
         })
-    }, [formValues]);
+
+      
+    }, [extraValues]);
 
       const handleNext = () =>{
         dispatch(Tab(4))
@@ -46,32 +52,49 @@ const TravelDetails = () => {
 
 
       const openModal = () =>{
-        setIsModalOpen(true)
+        extra.resetFields();
+
+        if(travelList.length > 0){
+          console.log('Work please');
+          setSubmittable(true);
+        }
+
+        setIsModalOpen(true);
       }
 
       const handleOk = () => {
-        setIsModalOpen(false);
+        
+
         extra.validateFields({  validateOnly: true  })
-        .then((x) => {  
-          setSubmittable(true);
+        .then((x) => {        
           setTravelList([...travelList, {
             country: extraValues.country,
             applicationDate: extraValues.applicationDate,
             status: extraValues.applicationStatus
           }]);
-          extra.resetFields()
+          setSubmittable(true);
+          setIsModalOpen(false);
+
         })
         .catch(err => {
           setSubmittable(false);
           alert('Complete the required fields')
-        })
-
-        console.log(travelList);
-        
+        })  
+        console.log(travelList); 
       }
 
 
       const handleCancel = () =>{
+        extra.validateFields({  validateOnly: true  })
+        .then((x) => {  
+          setSubmittable(true);
+        })
+        .catch(err => {
+          setSubmittable(false);
+          if(travelList.length > 0){
+            setSubmittable(true);
+          }
+        })
         setIsModalOpen(false);
       }
 
@@ -80,12 +103,9 @@ const TravelDetails = () => {
       const travelBefore = (e) =>{
         if(e === 'Yes'){
           setValue(e);
-          console.log(e);
           setIsModalOpen(true)
         }else{
           setValue(e);
-          setTravelList([])
-          console.log(travelList);
           form.validateFields({  validateOnly: true  })
           .then((x) => {  
             setSubmittable(true)
@@ -96,16 +116,11 @@ const TravelDetails = () => {
         }
       }
 
-      // const onChange = (e) => {
-      //   console.log('radio checked', e.target.value);
-      //   setValue(e.target.value);
-      // };
-
 
      return(
         <div className="container">
-            <Title level={3}>Travel Detail </Title>
-            <p>{JSON.stringify(travelList)}</p>
+            <Title level={3}>Application History </Title>
+        
             <br />
 
             <Form form={form} layout="vertical">
@@ -128,23 +143,23 @@ const TravelDetails = () => {
                 ></Select>
             </Form.Item>
 
-           <Modal title="Travel Details" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+           <Modal title="Application History" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
               <Form form={extra} layout="vertical">
                 <Row justify="space-between" gutter={[10, 0]}>
 
-              <Col flex="30%">
+              <Col flex="50%">
                   <Form.Item name="country" label="Country" rules={[{  required: true }]}>
                     <Input placeholder="Country" />
                   </Form.Item>
               </Col>
 
-              <Col flex="40%">
-                  <Form.Item name="applicationDate" label="Date">
+              <Col flex="50%">
+                  <Form.Item name="applicationDate" label="Date" tooltip="The date you started the application">
                     <DatePicker style={{width: '100%'}} placeholder='Date of Application' />
                   </Form.Item>
               </Col>
 
-              <Col flex="30%">
+              <Col flex="50%">
               <Form.Item name="applicationStatus" label="Status" rules={[{ required: true }]}>
               <Select
                   style={{  width: "100%", textAlign: 'left' }} 
@@ -263,4 +278,4 @@ const TravelDetails = () => {
     )
 }
 
-export default TravelDetails;
+export default ApplicationHistory;

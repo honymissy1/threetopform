@@ -10,7 +10,6 @@ const TravelHistory = () => {
     const [form] = Form.useForm();
     const [extra] = Form.useForm();
     const { Title } = Typography;
-    const [value, setValue] = useState(false);
     const [submittable, setSubmittable] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const formValues = Form.useWatch([], form);
@@ -28,7 +27,7 @@ const TravelHistory = () => {
        if(formValues?.travels === "No") {
         setSubmittable(true)
       }
-    }, [])
+    }, [formValues])
 
     useEffect(() => {
       extra.validateFields({  validateOnly: true  })
@@ -38,7 +37,8 @@ const TravelHistory = () => {
         .catch(err => {
           setSubmittable(false)
         })
-    }, [formValues]);
+
+    }, [extraValues]);
 
       const handleNext = () =>{
         dispatch(Tab(8))
@@ -48,30 +48,43 @@ const TravelHistory = () => {
 
 
       const openModal = () =>{
+        extra.resetFields()
+        if(travelList.length > 0){
+          setSubmittable(true);
+        }
         setIsModalOpen(true)
       }
 
       const handleOk = () => {
-        setIsModalOpen(false);
+
         extra.validateFields({  validateOnly: true  })
         .then((x) => {  
-          setSubmittable(true);
           setTravelList([...travelList, {
             country: extraValues.country,
           }]);
-          extra.resetFields()
+          setSubmittable(true);
+          setIsModalOpen(false);
         })
         .catch(err => {
           setSubmittable(false);
           alert('Complete the required fields')
         })
-
-        console.log(travelList);
-        
       }
 
 
       const handleCancel = () =>{
+        setIsModalOpen(false);
+
+        extra.validateFields({  validateOnly: true  })
+        .then((x) => {  
+          setSubmittable(true)
+        })
+        .catch(err => {
+            setSubmittable(false);
+            if(travelList.length > 0){
+              setSubmittable(true);
+            }
+        })
         setIsModalOpen(false);
       }
 
@@ -79,21 +92,19 @@ const TravelHistory = () => {
 
       const travelBefore = (e) =>{
         if(e === 'Yes'){
-          setValue(e);
-          console.log(e);
-          setIsModalOpen(true)
+          setIsModalOpen(true);
         }else{
-          setValue(e);
-          setTravelList([])
-          console.log(travelList);
+          form.validateFields({  validateOnly: true  })
+           .then((x) => {  
+             setSubmittable(true)
+           })
+           .catch(err => {
+             setSubmittable(false)
+           })
+            setTravelList([])
+            console.log(travelList);
         }
       }
-
-      // const onChange = (e) => {
-      //   console.log('radio checked', e.target.value);
-      //   setValue(e.target.value);
-      // };
-
 
      return(
         <div className="container">
@@ -106,7 +117,7 @@ const TravelHistory = () => {
 
             <Form.Item style={{width: '100%', margin: "0px auto"}} layout="vertical" name="hasTravelled" label="Have you ever travelled outside Nigeria" rules={[{  required: true }]}>
                 <Select onSelect={travelBefore}
-                        defaultValue={"No"}
+                        placeholder="No"
                         style={{  width: "100%", textAlign: 'left' }} 
                           options={[
                               {
@@ -132,7 +143,7 @@ const TravelHistory = () => {
                     </Col>
 
                     <Col flex="50%">
-                        <Form.Item name="purpose" label="Purpose of Travel" rules={[{  required: true }]}>
+                        <Form.Item name="purpose" label="Purpose" rules={[{  required: true }]} tooltip="The reason you travelled out of the country">
                             <Input placeholder="Purpose of Travel" />
                         </Form.Item>
                     </Col>
