@@ -32,8 +32,8 @@ const Occupation = () =>{
 
 
     const handleWork = (x) =>{
-      setIsModalOpen(true)
        if(x === 'Yes'){
+        setIsModalOpen(true)
         modal.validateFields({  validateOnly: true })
         .then(() => { setSubmittable(true)},
           () => {

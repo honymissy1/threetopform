@@ -180,7 +180,7 @@ const Education = () =>{
                             )
                         }
 
-                    <Col flex="40%">
+                    <Col flex="50%">
                         <Form.Item name="" tooltip="From the beginning of the academic programme to the end" label="Select Year"  rules={[{  required: true }]}>
                           <RangePicker /> 
                         </Form.Item>

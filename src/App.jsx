@@ -5,7 +5,6 @@ import { Tab } from './reducer/TabReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import GetStarted from './components/getStarted';
 import PersonalInfo from './components/personalInfo';
-// import TravelDetails from './components/travelDetails';
 import Education from './components/education';
 import Occupation from './components/occupation';
 import Family from './components/family';

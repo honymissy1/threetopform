@@ -78,13 +78,6 @@ a{
   padding: 20px 20px;
 }
 
-.parent .ant-row .ant-col label{
-  /* color: white; */
-}
-
-/* .parent h3{
-  color: white !important;
-} */
 
 .family {
   border-radius: 10px;
@@ -103,6 +96,63 @@ a{
 }
 
 .ant-form-item-control-input-content input{
-  width: auto;
   min-width: 100%;
+}
+
+.container .file h3{
+  padding: 10px;
+   background: #bbdcf7;
+  width: 100%;
+
+  text-align: center;
+  margin: 0px auto 10px;
+  border-radius: 5px
+}
+
+.ant-upload-list{
+  width: 100%;
+  padding: 0px 10px;
+  min-width: 230px;
+  margin: 0px auto;
+  /* border: 2px solid steelblue; */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  
+}
+
+.container .file .outer{
+  border: 2px solid steelblue;
+  margin: 20px auto;
+  width: 50%;
+}
+
+@media screen and (max-width: 700px){
+  .container .file .outer{
+    border: 2px solid steelblue;
+    margin: 20px auto;
+    width: 100%;
+  }
+  .container .file h3{
+    padding: 10px;
+     background: #bbdcf7;
+    width: 100%;
+    text-align: center;
+    margin: 0px auto 10px;
+    border-radius: 5px
+  }
+  
+  .ant-upload-list{
+    width: 100%;
+    padding: 10px;
+    min-width: 230px;
+    margin: 0px auto;
+    /* border: 2px solid steelblue; */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+  }
+  
 }

@@ -60,12 +60,12 @@ const Family = () =>{
                             <Row gutter={[10, 10]}>
 
                                     <Col flex="100%" >
-                                        <Form.Item label="Full Name" name="FullName" rules={[{  required: true }]}>    
+                                        <Form.Item label="Spouse Name" name="FullName" rules={[{  required: true }]}>    
                                           <Input placeholder="" />
                                         </Form.Item>
                                     </Col>
                                    <Col flex="50%">
-                                    <Form.Item label="marriageDate" name="Marriage Date" rules={[{  required: true }]}>
+                                    <Form.Item label="Marriage Date" name="marriageDate" rules={[{  required: true }]}>
                                         <DatePicker style={{width: '100%'}} placeholder='Date' />
                                     </Form.Item>
                                     </Col>
@@ -73,7 +73,7 @@ const Family = () =>{
                                     {
                                         formValues?.maritalStatus === 'Divorced' && (
                                             <Col flex="50%">
-                                            <Form.Item label="divorceDate" name="Divorce Date" rules={[{  required: true }]}>
+                                            <Form.Item label="Divorce Date" name="divorceDate" rules={[{  required: true }]}>
                                                 <DatePicker style={{width: '100%'}} placeholder='Date' />
                                             </Form.Item>
                                             </Col>

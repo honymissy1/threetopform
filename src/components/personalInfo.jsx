@@ -33,25 +33,28 @@ const PersonalInfo = () => {
             <br />
             <Form form={form} layout="vertical">
             <Row justify="space-between" gutter={[10, 0]}>
-                <Col flex="50%" >
+                <Col flex="100%" >
                  <Form.Item label="Full Name" name="FullName" rules={[{  required: true }]}> 
                     
-                   <Input placeholder="" />
+                   <Input placeholder="Adegoke Babatunde Cole"/>
                   </Form.Item>
                 </Col>
 
                 <Col flex="50%" >
                     <Form.Item label="Phone" name="Phone" rules={[{  required: true }]}>
-                     <Input placeholder="" required/>
+                     <Input placeholder="08022334455" required/>
                     </Form.Item>
                 </Col>
 
                 <Col flex="50%">
                  <Form.Item label="Date Of Birth" name="Dob" rules={[{  required: true }]}>
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker style={{width: '100%'}} placeholder='Ibadan' />
                   </Form.Item>
                 </Col>
 
+            </Row>
+
+            <Row justify="space-between" gutter={[10, 0]}>
                 <Col flex="50%">
                  <Form.Item label="Gender">
                    <Select
@@ -73,31 +76,11 @@ const PersonalInfo = () => {
                    </Select>
                   </Form.Item>
                 </Col>
-            </Row>
-
-            <Row justify="space-between" gutter={[10, 0]}>
-                <Col flex="50%" >
-                 <Form.Item name="Passport Number" label="Passport No" rules={[{  required: true }]}>
-                   <Input />
-                  </Form.Item>
-                </Col>
 
                 <Col flex="50%" >
                     <Form.Item name="placeofBirth" label="City of Birth"  rules={[{  required: true }]}>
                      <Input placeholder="" />
                     </Form.Item>
-                </Col>
-
-                <Col flex="50%">
-                 <Form.Item label="Passport Issue Date" name="issueDate">
-                    <DatePicker style={{width: '100%'}} placeholder='Issue Date' />
-                  </Form.Item>
-                </Col>
-
-                <Col flex="50%">
-                 <Form.Item label="Passport Expiry Date" name="expiryDate">
-                    <DatePicker style={{width: '100%'}} placeholder='Expiry Date' />
-                  </Form.Item>
                 </Col>
 
                 <Col flex="100%" >
