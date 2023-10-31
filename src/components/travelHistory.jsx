@@ -1,11 +1,16 @@
 import {Select,  Table, Button, Typography, Form, Input, Space, DatePicker, Row, Col, Modal } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Tab } from '../reducer/TabReducer';
+import { travels  } from '../reducer/DatabaseReducer';
+import moment from 'moment';
+
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
+
 const TravelHistory = () => {
+    const database = useSelector((state) => state.Database.user.travelDetails);
 
     const [form] = Form.useForm();
     const [extra] = Form.useForm();
@@ -18,7 +23,7 @@ const TravelHistory = () => {
     const [travelList, setTravelList] = useState([])
     const dispatch = useDispatch();
 
-
+    
     const handlePrev = () => {
         dispatch(Tab(3))
     }
@@ -29,16 +34,22 @@ const TravelHistory = () => {
       }
     }, [formValues])
 
-    useEffect(() => {
-      extra.validateFields({  validateOnly: true  })
-        .then((x) => {  
-          setSubmittable(true)
-        })
-        .catch(err => {
-          setSubmittable(false)
-        })
+    // useEffect(() => {
+    //   extra.validateFields({  validateOnly: true  })
+    //     .then((x) => {  
+    //       dispatch(travels({
+    //         country: x.country,
+    //         purpose: x.purpose,
+    //         from: x.from,
+    //         to: x.to
+    //       }))
+    //       setSubmittable(true)
+    //     })
+    //     .catch(err => {
+    //       setSubmittable(false)
+    //     })
 
-    }, [extraValues]);
+    // }, [extraValues]);
 
       const handleNext = () =>{
         dispatch(Tab(8))
@@ -59,16 +70,23 @@ const TravelHistory = () => {
 
         extra.validateFields({  validateOnly: true  })
         .then((x) => {  
-          setTravelList([...travelList, {
-            country: extraValues.country,
-          }]);
-          setSubmittable(true);
-          setIsModalOpen(false);
+          dispatch(travels({
+            country: x.country,
+            purpose: x.purpose,
+            from: moment(x.from.$d).format('DD/MM/YYYY'),
+            to: moment(x.to.$d).format('DD/MM/YYYY')
+          }));
+
+          console.log(database);
+          setSubmittable(true)
+          setIsModalOpen(false)
+
         })
         .catch(err => {
-          setSubmittable(false);
-          alert('Complete the required fields')
+          console.log(err);
+          setSubmittable(false)
         })
+
       }
 
 
@@ -149,13 +167,17 @@ const TravelHistory = () => {
                     </Col>
 
                     
-                    <Col flex="50%">
-                        <Form.Item name="duration" label="Duration" rules={[{  required: true }]}>
-                           <RangePicker />
+                   <Col flex="50%">
+                        <Form.Item name="from" label="From"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}}  />
                         </Form.Item>
                     </Col>
 
-                    
+                    <Col flex="50%">
+                        <Form.Item name="to" label="To"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}} />
+                        </Form.Item>
+                    </Col>
 
  
                 </Row>
@@ -171,7 +193,7 @@ const TravelHistory = () => {
             }
 
             {
-             (formValues?.hasTravelled === "Yes" && travelList.length > 0) && (
+             (formValues?.hasTravelled === "Yes" && database.length > 0) && (
                 <div>
                  <Table columns={[
                     {
@@ -181,28 +203,35 @@ const TravelHistory = () => {
                     },
 
                     {
-                      title: 'Date',
-                      dataIndex: 'date',
-                      key: 'date'
+                      title: 'From',
+                      dataIndex: 'from',
+                      key: 'from'
                     },
 
                     {
-                      title: 'Status',
-                      dataIndex: 'status',
-                      key: 'status'
+                      title: 'To',
+                      dataIndex: 'to',
+                      key: 'to'
                     },
 
 
                   ]}
+
+                  dataSource={
+                    [...database]
+                  }
                   
-                  dataSource={[
-                    {
-                      key: 1,
-                      country: 'Ghana',
-                      date: '12-4-1990',
-                      status: 'Denied'
-                    }
-                  ]}
+                  // dataSource={
+                  // // [
+                  // //   {
+                  // //     key: 1,
+                  // //     country: 'Ghana',
+                  // //     date: '12-4-1990',
+                  // //     status: 'Denied'
+                  // //   }
+                  // // ]
+
+                  // }
 
                   pagination={false}
                   

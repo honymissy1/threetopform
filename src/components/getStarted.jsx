@@ -3,85 +3,60 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '../reducer/TabReducer';
 import db from '../firebaseConfig';
-
+import {  started } from '../reducer/DatabaseReducer';
 import { collection, addDoc, query, getDocs, where } from "firebase/firestore";
-
+import moment from 'moment';
 const GetStarted = () =>{
   // const [tabState, setTabState] = useState(0);
   const [modal] = Form.useForm();
   const modalValue = Form.useWatch([], modal);
-
+  const user = useSelector((state) => state.Database);
+  
   const { Title, Text } = Typography;
   const TabNumber = useSelector((state) => state.ActiveTab);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { RangePicker } = DatePicker;
+  const [validity, setvalidity] = useState([])
 
 
   const handleOk =  () =>{
     modal.validateFields({  validateOnly: true  })
     .then(async(x) => { 
-      console.log('Hello how are u');
-       const q = query(collection(db, 'user'), where('passportNumber', '==', 'S23424'));
-       const querySnapshot = await getDocs(q);
-       console.log(querySnapshot.empty);
+      console.log(x.from.$d);
+       dispatch(started({
+          passportNumber: x.passport, 
+          issueDate: moment(x.from.$d).format('DD/MM/YYYY'),
+          expiryDate: moment(x.to.$d).format('DD/MM/YYYY')
+        }))
 
-       if(querySnapshot.empty){
-         console.log('Nthing dey');
-        }else{
-        console.log('something dey');
-       }
-       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data().issueDate);
-        if(doc){
-          console.log('It is there');
-        }else{
-          console.log('E no dey');
-        }
-      });
- 
-      // try {
-      //   const docRef = await addDoc(collection(db, "user"), {
-      //     passportNumber: modalValue.passport,
-      //     issueDate: modalValue.validity[0].$d,
-      //     expiryDate: modalValue.validity[1].$d,
-      //     name: null,
-      //     age: null,
-      //     family: {
-      //       name: null,
-      //       spouse: null,
-      //       friends: [null, null],
-      //       adds: [{name: null}, {name: null}]
-      //     }
-
-      //   });
-      //   console.log("Document written with ID: ", docRef.id);
-      // } catch (e) {
-      //   console.error("Error adding document: ", e);
-      // }
-     
-      // setIsModalOpen(false);
+       dispatch(Tab(2));
+       setIsModalOpen(false);
     })
-    // .catch(err => {
-    //   alert('Please kindly complete the form')
-    // })
-    
-    
-    // console.log();
+    .catch(err =>{
+      console.log(err);
+      if(err?.errorFields?.length > 0){
+        alert('Please Fill the required fields')
+      }
+    })
+
   }
+
   const openModal = () =>{
     setIsModalOpen(true)
   }
-
-
 
   const handleCancel = () =>{
     setIsModalOpen(false)
   }
 
-  
+  const handleDateChange = (e, str) =>{
+    console.log(str);
+    setvalidity(str)
+  }
 
+
+ 
   return (
     <div className='container'>
       <div style={{width: '70vw', margin: '0px auto'}}>
@@ -110,11 +85,18 @@ const GetStarted = () =>{
                           </Form.Item>
                       </Col>
 
+                      <Col flex="50%">
+                        <Form.Item name="from" label="From"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}} placeholder='Issue Date' />
+                        </Form.Item>
+                  
+                      </Col>
 
-                      <Col flex="100%">
-                          <Form.Item name="validity" tooltip="" label="Validity date" rules={[{  required: true }]}>
-                            <RangePicker style={{width: "100%"}} /> 
-                          </Form.Item>
+                      <Col flex="50%">
+                        <Form.Item name="to" label="To"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}} placeholder='Expiry Date' />
+                        </Form.Item>
+                  
                       </Col>
 
                     </Row>

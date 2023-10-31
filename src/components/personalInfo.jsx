@@ -1,32 +1,68 @@
 import {Select, Button, Typography, Form, Input, Space, DatePicker, Row, Col } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import {  personal } from '../reducer/DatabaseReducer';
 import { Tab } from '../reducer/TabReducer';
+import moment from 'moment';
+import { getDoc, getDocs, doc, query, updateDoc, collection, where } from 'firebase/firestore';
+import db from '../firebaseConfig';
 const PersonalInfo = () => {
     const { Title } = Typography;
     const [submittable, setSubmittable] = useState(false);
     const [form] = Form.useForm();
     const values = Form.useWatch([], form);
-    const dispatch = useDispatch();                   
+    const dispatch = useDispatch();  
+    const [dobDate, setDobDate] = useState('')
 
-    // const handlePrev = () => {
-    //     dispatch(Tab(2))
-    // }
+
+
+    // Local
+    const localData = JSON.parse(localStorage.getItem('data'));
+    const localNavigated = JSON.parse(localStorage.getItem('navigated'));
+    // local
+
+
     useEffect(() => {
       form.validateFields({  validateOnly: true })
-        .then(() => { setSubmittable(true)},
+        .then((x) => {
+          dispatch(personal({
+             fullname: x.fullName,
+             phone:  x.phone,
+             dob: x.dob,
+             gender: x.gender,
+             cityOfBirth: x.placeofBirth,
+             address: x.address
+          }))
+          setSubmittable(true)
+        },
           () => {
             setSubmittable(false);
-          });
+          });;
+      
     }, [values]);
 
-      const handleNext = () =>{
-        dispatch(Tab(3))
-        console.log(values);
-      }
+
+
+  const handleNext = () =>{
+      dispatch(Tab(3))
+  }
+
+
      const handlePrev = () => {
         dispatch(Tab(1))
       }
+
+      const handleChange =(e) =>{
+       console.log(e);
+      }
+
+      const dateChange =(e, str) =>{
+        console.log(str);
+        setDobDate(str)
+       }
+
+    
+  
     return(
         <div className="container">
             <Title level={3}> Personal Info </Title>
@@ -34,21 +70,21 @@ const PersonalInfo = () => {
             <Form form={form} layout="vertical">
             <Row justify="space-between" gutter={[10, 0]}>
                 <Col flex="100%" >
-                 <Form.Item label="Full Name" name="FullName" rules={[{  required: true }]}> 
+                 <Form.Item label="Full Name" name="fullName" rules={[{  required: true }]}> 
                     
                    <Input placeholder="Adegoke Babatunde Cole"/>
                   </Form.Item>
                 </Col>
 
                 <Col flex="50%" >
-                    <Form.Item label="Phone" name="Phone" rules={[{  required: true }]}>
-                     <Input placeholder="08022334455" required/>
+                    <Form.Item label="Phone" name="phone" rules={[{  required: true }]}>
+                     <Input  placeholder="08022334455" required/>
                     </Form.Item>
                 </Col>
 
                 <Col flex="50%">
-                 <Form.Item label="Date Of Birth" name="Dob" rules={[{  required: true }]}>
-                    <DatePicker style={{width: '100%'}} placeholder='Ibadan' />
+                 <Form.Item label="Date Of Birth" name="dob" rules={[{  required: true }]}>
+                    <DatePicker  onChange={dateChange} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
@@ -56,10 +92,11 @@ const PersonalInfo = () => {
 
             <Row justify="space-between" gutter={[10, 0]}>
                 <Col flex="50%">
-                 <Form.Item label="Gender">
+                 <Form.Item name="gender" label="Gender">
                    <Select
-                    name="Gender"
-                    defaultValue={"Male"}
+                   
+                    onSelect={handleChange}
+                    name="gender"
                     style={{  width: "100%", textAlign: 'left' }} 
                      options={[
                          {
@@ -84,8 +121,8 @@ const PersonalInfo = () => {
                 </Col>
 
                 <Col flex="100%" >
-                  <Form.Item label="Address" rules={[{  required: true }]} name="Address">
-                   <Input placeholder="" />
+                  <Form.Item label="Address" rules={[{  required: true }]} name="address" required>
+                   <Input placeholder="No 10 Shonuga Street VI Lagos" />
                   </Form.Item>
                 </Col>
 

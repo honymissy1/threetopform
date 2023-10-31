@@ -99,9 +99,8 @@ const Family = () =>{
 
 
                     <Col flex="100%">
-                        <Form.Item name="childrenNumber" label="Number of Children" rules={[{ required: true }]}>
-                           <InputNumber min={0} style={{width: '100%'}} />
-                        </Form.Item>
+                            <Button>+ Add Child</Button>
+
                     </Col>
                 </Row>
 

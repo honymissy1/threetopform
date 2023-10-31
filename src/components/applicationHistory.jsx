@@ -2,6 +2,8 @@ import {Select, Radio, Table, Button, Typography, Form, Input,  DatePicker, Row,
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Tab } from '../reducer/TabReducer';
+import { application } from '../reducer/DatabaseReducer';
+import moment from 'moment';
 const { TextArea } = Input;
 const { Title } = Typography;
 
@@ -20,6 +22,7 @@ const ApplicationHistory = () => {
     const [travelList, setTravelList] = useState([])
     const dispatch = useDispatch();
 
+    const localData = JSON.parse(localStorage.getItem('data'))
 
     const handlePrev = () => {
         dispatch(Tab(2))
@@ -35,7 +38,8 @@ const ApplicationHistory = () => {
     useEffect(() => {
       extra.validateFields({  validateOnly: true  })
         .then((x) => {  
-          setSubmittable(true)
+          setSubmittable(true);
+          
         })
         .catch(err => {
           setSubmittable(false)
@@ -45,6 +49,7 @@ const ApplicationHistory = () => {
     }, [extraValues]);
 
       const handleNext = () =>{
+        localStorage.setItem('data', JSON.stringify({...localData, applicationHistory:[...travelList]}))
         dispatch(Tab(4))
       }
 
@@ -55,7 +60,6 @@ const ApplicationHistory = () => {
         extra.resetFields();
 
         if(travelList.length > 0){
-          console.log('Work please');
           setSubmittable(true);
         }
 
@@ -63,24 +67,29 @@ const ApplicationHistory = () => {
       }
 
       const handleOk = () => {
-        
-
         extra.validateFields({  validateOnly: true  })
-        .then((x) => {        
-          setTravelList([...travelList, {
-            country: extraValues.country,
-            applicationDate: extraValues.applicationDate,
-            status: extraValues.applicationStatus
-          }]);
+        .then((x) => {  
+          dispatch(
+            application({
+            country: x.country,
+            applicationDate: moment(x.applicationDate?.$d).format('DD/MM/YYYY'),
+            status: x.status,
+            issueDate:   x.issueDate ? moment(x?.issueDate?.$d).format('DD/MM/YYYY') : null,
+            expiryDate:  x.expiryDate ? moment(x?.expiryDate?.$d).format('DD/MM/YYYY') : null,
+            denialDate: x.denialDate ? moment(x?.denialDate?.$d).format('DD/MM/YYYY') : null,
+            reason: x.reason ? x.reason : null
+           })
+          )
+
           setSubmittable(true);
           setIsModalOpen(false);
 
         })
         .catch(err => {
           setSubmittable(false);
-          alert('Complete the required fields')
+          console.log(err);
         })  
-        console.log(travelList); 
+      
       }
 
 
@@ -120,7 +129,7 @@ const ApplicationHistory = () => {
      return(
         <div className="container">
             <Title level={3}>Application History </Title>
-        
+            <p>{JSON.stringify(travelList)}</p>
             <br />
 
             <Form form={form} layout="vertical">
@@ -160,7 +169,7 @@ const ApplicationHistory = () => {
               </Col>
 
               <Col flex="50%">
-              <Form.Item name="applicationStatus" label="Status" rules={[{ required: true }]}>
+              <Form.Item name="status" label="Status" rules={[{ required: true }]}>
               <Select
                   style={{  width: "100%", textAlign: 'left' }} 
                   options={[
@@ -178,7 +187,7 @@ const ApplicationHistory = () => {
               </Col>
                 </Row>
               {
-                extraValues?.applicationStatus === "Approved" && (
+                extraValues?.status === "Approved" && (
                   <Row gutter={[10, 0]}>
                     <Col flex="50%">
                       <Form.Item name="issueDate" label="Issue Date"  rules={[{  required: true }]}>
@@ -195,15 +204,15 @@ const ApplicationHistory = () => {
                 )
               }
               {
-              extraValues?.applicationStatus === "Denied" && (
+              extraValues?.status === "Denied" && (
                 <Row gutter={[0, 10]}>
                   <Col flex="100%">
-                      <Form.Item name="issueDate" label="Denial Date">
+                      <Form.Item name="denialDate" label="Denial Date">
                         <DatePicker style={{width: '100%'}} placeholder='Denial Date' />
                       </Form.Item>
                   </Col>
                   <Col flex="100%"> 
-                    <Form.Item name="denialReason" label="Reason for Denial" rules={[{  required: true }]}>
+                    <Form.Item name="reason" label="Reason for Denial" rules={[{  required: true }]}>
                       <TextArea
                           autoSize={{ minRows: 3, maxRows: 5 }}
                       />

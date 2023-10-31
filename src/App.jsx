@@ -11,10 +11,12 @@ import Family from './components/family';
 import FilesUpload from './components/filesUpload';
 import TravelHistory from './components/travelHistory';
 import ApplicationHistory from './components/applicationHistory';
+import Finish from './components/finish';
 
 const App = () => {
   const TabNumber = useSelector((state) => state.ActiveTab);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  let doSomething = false
   return(
   <>
    <Nav />
@@ -28,6 +30,7 @@ const App = () => {
         label: 'Start Application',
         key: '1',
         children: <GetStarted />,
+        disabled: doSomething
       },
       {
         label: 'Personal Profile',
@@ -62,13 +65,21 @@ const App = () => {
       {
         label: 'Family',
         key: '7',
-        children: <Family />
+        children: <Family />,
+        // disabled: true
+
       },
 
       {
         label: 'File Uploads',
         key: '8',
         children: <FilesUpload />
+      },
+
+      {
+        label: 'Finish',
+        key: '9',
+        children: <Finish />
       },
 
     ]}

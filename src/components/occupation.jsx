@@ -1,8 +1,9 @@
 import {Select, Button, Form, Input, Space, Typography, DatePicker, Row, Col, Modal } from 'antd';
 import {useState, useEffect} from 'react';
-
+import { occupation } from '../reducer/DatabaseReducer';
 import { useDispatch } from 'react-redux';
 import { Tab } from '../reducer/TabReducer'
+import moment from 'moment';
 const { RangePicker } = DatePicker;
 const Occupation = () =>{
     const dispatch = useDispatch()
@@ -50,17 +51,19 @@ const Occupation = () =>{
       const handleOk = () => {
         setIsModalOpen(false);
         modal.validateFields({  validateOnly: true })
-        .then(() => {
+        .then((x) => {
            setSubmittable(true);
-           console.log(modalValues);
-           // Add this to a local state
-           setOccupationList([...occupationList, {
-            company: modalValues.company,
-            position: modalValues.position,
-            jobTitle: modalValues.jobTitle,
-            workPeriod: [modalValues.workPeriod[0], modalValues.workPeriod[1]],
-            jobAddress: modalValues.jobAddress
-           }])
+           console.log(x);
+           dispatch(occupation({
+            company: x.company,
+            position: x.position,
+            jobTitle: x.jobTitle,
+            from: moment(x.from.$d).format('DD/MM/YYYY'),
+            to: moment(x.from.$d).format('DD/MM/YYYY'),
+            jobAddress: x.jobAddress
+           }))
+
+
            modal.resetFields();
         },
           () => {     
@@ -127,7 +130,7 @@ const Occupation = () =>{
                     <Row justify="space-between" gutter={[10, 0]}>
 
                 <Col flex="100%">
-                    <Form.Item name="Company" label="Company" tooltip="The name of your Employer or Business Name" rules={[{  required: true }]}>
+                    <Form.Item name="company" label="Company" tooltip="The name of your Employer or Business Name" rules={[{  required: true }]}>
                         <Input placeholder="Glo Nigeria" />
                     </Form.Item>
                 </Col>
@@ -139,19 +142,23 @@ const Occupation = () =>{
                 </Col>
 
                 <Col flex="50%">
-                    <Form.Item name="jobTitle" label="Description" rules={[{  required: true }]} tooltip="What you do in the Job e.g As a sales manager I ensure better sale">
+                    <Form.Item name="jobTitle" label="Job Description" rules={[{  required: true }]} tooltip="What you do in the Job e.g As a sales manager I ensure better sale">
                         <Input placeholder="I manage sales in the company" />
                     </Form.Item>
 
                </Col>
 
-               <Col flex="100%">
-                    <Form.Item name="workPeriod" label="Select Year"  rules={[{  required: true }]}>
-                      <RangePicker style={{width: '100%'}}/> 
-                    </Form.Item>
-               </Col>
+                   <Col flex="50%">
+                        <Form.Item name="from" label="From"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}}  />
+                        </Form.Item>
+                    </Col>
 
-
+                    <Col flex="50%">
+                        <Form.Item name="to" label="To"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}} />
+                        </Form.Item>
+                    </Col>
 
                <Col flex="100%" >
                     <Form.Item name="jobAddress" label="Work Address" rules={[{  required: true }]}>

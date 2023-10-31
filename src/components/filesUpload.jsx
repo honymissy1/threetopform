@@ -135,6 +135,13 @@ const FilesUpload = () => {
                 
             </div>
           </div>
+          <Row justify="space-between">
+                <Col>
+                  <Button className='button'>Prev</Button>
+                </Col>
+
+                <Col><Button htmlType="submit" className='button'>Finish</Button></Col>
+            </Row>
         </div>
       );
 }

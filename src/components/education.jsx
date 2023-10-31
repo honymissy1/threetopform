@@ -2,6 +2,8 @@ import {Select, Button, Form, Input, Space, Typography, DatePicker, Row, Col, Mo
 import {useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { Tab } from '../reducer/TabReducer';
+import { eductionHistory } from '../reducer/DatabaseReducer';
+import moment from 'moment';
     
 
 const Education = () =>{
@@ -17,7 +19,6 @@ const Education = () =>{
     const [submittable, setSubmittable] = useState(false);
     const dispatch = useDispatch();
 
-    const [educationList, setEducationList] = useState([])
 
     const { RangePicker } = DatePicker;
     const certs = (x) =>{
@@ -49,22 +50,20 @@ const Education = () =>{
         setIsModalOpen(false);
 
         modal.validateFields({  validateOnly: true })
-        .then(() => {
+        .then((x) => {
+          dispatch(eductionHistory({
+            school: x.school,
+            certification: x.certification,
+            course: x.course || null,
+            from: moment(x.from.$d).format('DD/MM/YYYY'),
+            to: moment(x.to.$d).format('DD/MM/YYYY')
+          }))
+
           setSubmittable(true);
-           setEducationList([...educationList, modalValues])
-          //  Send Data to the Database -> Firestore
-          //  Sending data to the array of education object
-          // If it's successful then give the use a prompt of the success
-          
           modal.resetFields()
           },
           () => {
             alert('Fill required fields')
-            if(educationList.length > 0){
-               setSubmittable(true);
-            }else{
-              setSubmittable(false);
-            }
           });
       }
 
@@ -134,7 +133,7 @@ const Education = () =>{
                     <Row justify="space-between" gutter={[10, 0]}>
 
                 <Col flex="100%">
-                    <Form.Item name="Instition" label="Country">
+                    <Form.Item name="school" label="Country">
                         <Input placeholder="School" />
                     </Form.Item>
                 </Col>
@@ -171,8 +170,8 @@ const Education = () =>{
                     </Col>
                         {
                             modalValues?.certification === "Secondary School" || formValues?.certification !== "Primary School"  && (
-                            <Col flex="50%">
-                                <Form.Item name="Course" label="Course of Study" rules={[{  required: true }]}>
+                            <Col flex="100%">
+                                <Form.Item name="course" label="Course of Study" rules={[{  required: true }]}>
                                 <Input placeholder="Course" />
                                 </Form.Item>
                             </Col>
@@ -181,8 +180,14 @@ const Education = () =>{
                         }
 
                     <Col flex="50%">
-                        <Form.Item name="" tooltip="From the beginning of the academic programme to the end" label="Select Year"  rules={[{  required: true }]}>
-                          <RangePicker /> 
+                        <Form.Item name="from" label="From"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}}  />
+                        </Form.Item>
+                    </Col>
+
+                    <Col flex="50%">
+                        <Form.Item name="to" label="To"  rules={[{  required: true }]}>
+                          <DatePicker style={{width: '100%'}} />
                         </Form.Item>
                     </Col>
 
