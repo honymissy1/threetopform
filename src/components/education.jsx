@@ -1,6 +1,6 @@
-import {Select, Button, Form, Input, Space, Typography, DatePicker, Row, Col, Modal } from 'antd';
+import {Select, Button, Form, Input, Table, Typography, DatePicker, Row, Col, Modal } from 'antd';
 import {useState, useEffect} from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from '../reducer/TabReducer';
 import { eductionHistory } from '../reducer/DatabaseReducer';
 import moment from 'moment';
@@ -18,6 +18,7 @@ const Education = () =>{
     const { Title } = Typography;
     const [submittable, setSubmittable] = useState(false);
     const dispatch = useDispatch();
+    const database = useSelector((state) => state.Database.user.education);
 
 
     const { RangePicker } = DatePicker;
@@ -204,6 +205,42 @@ const Education = () =>{
             <div>
               <Button onClick={openModal} type="dashed">+ More Education</Button>
             </div>
+          )
+        }
+
+        {
+          database.length > 0 && (
+            <Table 
+             style={{width: '100%'}}
+            columns={[
+              {
+                title: 'Institution',
+                dataIndex: 'school',
+                key: 'school'
+              },
+
+              {
+                title: 'Certification',
+                dataIndex: 'certification',
+                key: 'certification'
+              },
+
+              {
+                title: 'From',
+                dataIndex: 'from',
+                key: 'from'
+              }
+
+
+            ]}
+
+            dataSource={
+              [...database]
+            }
+
+            pagination={false}
+            
+            />
           )
         }
 

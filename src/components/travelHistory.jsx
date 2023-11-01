@@ -34,23 +34,6 @@ const TravelHistory = () => {
       }
     }, [formValues])
 
-    // useEffect(() => {
-    //   extra.validateFields({  validateOnly: true  })
-    //     .then((x) => {  
-    //       dispatch(travels({
-    //         country: x.country,
-    //         purpose: x.purpose,
-    //         from: x.from,
-    //         to: x.to
-    //       }))
-    //       setSubmittable(true)
-    //     })
-    //     .catch(err => {
-    //       setSubmittable(false)
-    //     })
-
-    // }, [extraValues]);
-
       const handleNext = () =>{
         dispatch(Tab(5))
       }
@@ -127,7 +110,6 @@ const TravelHistory = () => {
      return(
         <div className="container">
             <Title level={3}>Travel Detail </Title>
-            <p>{JSON.stringify(travelList)}</p>
             <br />
 
             <Form form={form} layout="vertical">
@@ -220,18 +202,6 @@ const TravelHistory = () => {
                   dataSource={
                     [...database]
                   }
-                  
-                  // dataSource={
-                  // // [
-                  // //   {
-                  // //     key: 1,
-                  // //     country: 'Ghana',
-                  // //     date: '12-4-1990',
-                  // //     status: 'Denied'
-                  // //   }
-                  // // ]
-
-                  // }
 
                   pagination={false}
                   

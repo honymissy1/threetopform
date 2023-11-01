@@ -1,5 +1,5 @@
 import {Select, Radio, Table, Button, Typography, Form, Input,  DatePicker, Row, Col, Modal } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Tab } from '../reducer/TabReducer';
 import { application } from '../reducer/DatabaseReducer';
@@ -21,8 +21,8 @@ const ApplicationHistory = () => {
 
     const [travelList, setTravelList] = useState([])
     const dispatch = useDispatch();
+    const database = useSelector((state) => state.Database.user.applicationHistory.applications);
 
-    const localData = JSON.parse(localStorage.getItem('data'))
 
     const handlePrev = () => {
         dispatch(Tab(2))
@@ -49,7 +49,6 @@ const ApplicationHistory = () => {
     }, [extraValues]);
 
       const handleNext = () =>{
-        localStorage.setItem('data', JSON.stringify({...localData, applicationHistory:[...travelList]}))
         dispatch(Tab(4))
       }
 
@@ -129,7 +128,6 @@ const ApplicationHistory = () => {
      return(
         <div className="container">
             <Title level={3}>Application History </Title>
-            <p>{JSON.stringify(travelList)}</p>
             <br />
 
             <Form form={form} layout="vertical">
@@ -234,7 +232,7 @@ const ApplicationHistory = () => {
             }
 
             {
-             (formValues?.hasApplied === "Yes" && travelList.length > 0) && (
+             database.length > 0 && (
                 <div>
                  <Table columns={[
                     {
@@ -245,8 +243,8 @@ const ApplicationHistory = () => {
 
                     {
                       title: 'Date',
-                      dataIndex: 'date',
-                      key: 'date'
+                      dataIndex: 'dateOfApplication',
+                      key: 'dateOfApplication'
                     },
 
                     {
@@ -258,14 +256,7 @@ const ApplicationHistory = () => {
 
                   ]}
                   
-                  dataSource={[
-                    {
-                      key: 1,
-                      country: 'Ghana',
-                      date: '12-4-1990',
-                      status: 'Denied'
-                    }
-                  ]}
+                  dataSource={[...database]}
 
                   pagination={false}
                   

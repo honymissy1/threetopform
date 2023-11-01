@@ -88,7 +88,6 @@ const Family = () =>{
           <div className="container">
             <Form className="family" form={form} layout="vertical">
                <Title level={3}> Family Info </Title>
-               {/* <p>{JSON.stringify(database)}</p> */}
                <Row justify="space-between" gutter={[10, 0]}>
                     <Col flex="100%">
                     <Form.Item name="maritalStatus" label="Marital Status" rules={[{ required: true }]}>

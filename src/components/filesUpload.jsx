@@ -114,7 +114,7 @@ const FilesUpload = () => {
 
     return (
         <div className="container">
-          <p>{JSON.stringify(database)}</p>
+
           <div className="file">
 
             <div className='outer'>

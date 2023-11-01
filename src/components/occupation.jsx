@@ -1,7 +1,7 @@
-import {Select, Button, Form, Input, Space, Typography, DatePicker, Row, Col, Modal } from 'antd';
+import {Select, Button, Form, Input, Table, Typography, DatePicker, Row, Col, Modal } from 'antd';
 import {useState, useEffect} from 'react';
 import { occupation } from '../reducer/DatabaseReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from '../reducer/TabReducer'
 import moment from 'moment';
 const { RangePicker } = DatePicker;
@@ -9,6 +9,8 @@ const Occupation = () =>{
     const dispatch = useDispatch()
     const [form] = Form.useForm();
     const formValues = Form.useWatch([], form);
+    const database = useSelector((state) => state.Database.user.jobs);
+
 
     const [modal] = Form.useForm();
     const modalValues = Form.useWatch([], modal);
@@ -92,7 +94,6 @@ const Occupation = () =>{
     return(
         <div className="container">
         <Title level={3}>WORK / OCCUPATION</Title>
-        <p>{JSON.stringify(occupationList)}</p>
 
         <br />
         <Form form={form} layout="vertical">
@@ -179,6 +180,41 @@ const Occupation = () =>{
           formValues?.workHistory === "Yes" && (
               <Button onClick={openModal} type="dashed">+ Add Job</Button>
           )
+        }
+
+        {
+          database.length > 0 && (
+            <Table columns={[
+              {
+                title: 'Company',
+                dataIndex: 'company',
+                key: 'company'
+              },
+
+              {
+                title: 'Position',
+                dataIndex: 'position',
+                key: 'position'
+              },
+
+              {
+                title: 'From',
+                dataIndex: 'from',
+                key: 'from'
+              }
+
+
+            ]}
+
+            dataSource={
+              [...database]
+            }
+
+            pagination={false}
+            
+            />
+          )
+
         }
 
 
