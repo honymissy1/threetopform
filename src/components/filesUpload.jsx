@@ -1,6 +1,14 @@
 import {Button, Upload, Space, Input, Typography, Row, Col, Modal, DatePicker } from 'antd';
 import {UploadOutlined,PlusOutlined} from '@ant-design/icons';
 import { useState } from 'react';
+import { storage } from '../firebaseConfig';
+import {  ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { filesFunc } from '../reducer/DatabaseReducer';
+import db from '../firebaseConfig';
+import {  collection, addDoc } from 'firebase/firestore';
+import { useDispatch, useSelector } from 'react-redux';
+import { Tab } from '../reducer/TabReducer';
+
 const FilesUpload = () => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -10,6 +18,8 @@ const FilesUpload = () => {
     const [marriageFile, setMarriageFile] = useState([]);
     const [otherList, setOtherList] = useState([]);
 
+    const database = useSelector((state) => state.Database.user);
+    const dispatch = useDispatch()
     const handleChange = ({ fileList: newFileList }) =>{
         setFileList(newFileList)
     }
@@ -50,21 +60,28 @@ const FilesUpload = () => {
           try {
             // Generate a unique file name (you can use your own logic here)
             const fileName = `${Date.now()}_${file.name}`;
-            console.log('Updated');
-            onError();
-            // Create a reference to Firebase Storage
-            // const storageRef = ref(storage, fileName);
+
+            const storageRef = ref(storage, fileName);
             
-            // // Upload the file to Firebase Storage
-            // await uploadBytes(storageRef, file.originFileObj);
-      
+
+            uploadBytes(storageRef, file)
+              .then(snapshot => {
+                return getDownloadURL(snapshot.ref)
+              })
+              .then(downloadURL => {
+                onSuccess();
+                console.log('Download URL', downloadURL)
+                dispatch(filesFunc(downloadURL))
+
+              })
+
             // Handle the successful upload
-            // onSuccess();
-            console.log(`${file.name} file uploaded successfully.`);
           } catch (error) {
             // Handle upload error
-            // onError(error);
-            console.error(`${file.name} file upload failed.`, error);
+            onError(error);
+            handleRemove(file)
+            alert('File Upload Failed')
+            console.error(error);
           }
         }
 
@@ -82,8 +99,22 @@ const FilesUpload = () => {
           );
 
 
+
+          const handleFinish = async () =>{
+ 
+            try{
+              const docRef = await addDoc(collection(db, "users"),  database);
+              console.log("Document written with ID: ", docRef.id);
+              dispatch(Tab(9))
+            }catch(err){
+              console.log(err);
+            }
+          }
+
+
     return (
         <div className="container">
+          <p>{JSON.stringify(database)}</p>
           <div className="file">
 
             <div className='outer'>
@@ -103,21 +134,26 @@ const FilesUpload = () => {
                 </>
 
             </div>
+
+            {
+              database?.family?.maritalStatus && (
+                <div  className='outer'>
+                    <h3>Marriage Documents </h3>
+                    <>
+                        <Upload
+                            customRequest={customRequest}
+                            listType="picture-card"
+                            fileList={marriageFile}
+                            onPreview={handlePreview}
+                            onChange={handleChange1}
+                        >
+                            {fileList.length >= 15 ? null : uploadButton}
+                        </Upload>
+                    </>
+                </div>
+              )
+            }
             
-            <div  className='outer'>
-                <h3>Marriage Documents </h3>
-                <>
-                    <Upload
-                        customRequest={customRequest}
-                        listType="picture-card"
-                        fileList={marriageFile}
-                        onPreview={handlePreview}
-                        onChange={handleChange1}
-                    >
-                        {fileList.length >= 15 ? null : uploadButton}
-                    </Upload>
-                </>
-            </div>
 
             <div className='outer'>
                 <h3>Other Documents</h3>
@@ -140,7 +176,7 @@ const FilesUpload = () => {
                   <Button className='button'>Prev</Button>
                 </Col>
 
-                <Col><Button htmlType="submit" className='button'>Finish</Button></Col>
+                <Col><Button onClick={handleFinish} htmlType="submit" className='button'>Finish</Button></Col>
             </Row>
         </div>
       );

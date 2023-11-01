@@ -156,3 +156,7 @@ a{
   }
   
 }
+
+.ant-calendar-input-wrap {
+  display: none;
+}

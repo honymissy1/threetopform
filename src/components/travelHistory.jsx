@@ -52,7 +52,7 @@ const TravelHistory = () => {
     // }, [extraValues]);
 
       const handleNext = () =>{
-        dispatch(Tab(8))
+        dispatch(Tab(5))
       }
 
       // Modal Functions
@@ -78,7 +78,7 @@ const TravelHistory = () => {
           }));
 
           console.log(database);
-          setSubmittable(true)
+          setSubmittable(true);
           setIsModalOpen(false)
 
         })

@@ -1,16 +1,25 @@
-import {Select, Button, Typography, Form, Input, Space, DatePicker, Row, Col, InputNumber } from 'antd';
-import { useDispatch } from 'react-redux';
+import {Select, Button, Typography, Form, Input, Space, DatePicker, Row, Col, Modal } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Tab } from '../reducer/TabReducer';
+import { familyDetails, childDetails } from '../reducer/DatabaseReducer';
+import moment from 'moment';
 const { Title } = Typography;
 
 
 const Family = () =>{
     const [form] = Form.useForm();
     const formValues = Form.useWatch([], form);
+
+
+    const [child] = Form.useForm();
+    const childValues = Form.useWatch([], child);
+
     const dispatch = useDispatch();
     const [sameAddress, setSameAddress] = useState(true)
     const [submittable, setSubmittable] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const database = useSelector((state) => state.Database.user.family);
 
     useEffect(() =>{
       form.validateFields({ validateOnly: true})
@@ -20,16 +29,66 @@ const Family = () =>{
 
     const handlePrev = () =>{
         console.log('Prev');
+        dispatch(Tab(6))
     }
 
     const handleNext = () =>{
-        console.log(formValues);
-        console.log('Next');
+        form.validateFields({validateOnly: true})
+        .then(x =>{
+          dispatch(familyDetails({
+            maritalStatus: x.maritalStatus || null,
+            spouseName: x.spouseName || null,
+            spouseDob: x.spouseDob ? moment(x.spouseDob.$d).format('DD/MM/YYYY') : null,
+            marriageDate: x.marriageDate ? moment(x.marriageDate.$d).format('DD/MM/YYYY') : null,
+            divorceDate:  x.divorceDate ? moment(x.divorceDate.$d).format('DD/MM/YYYY') : null,
+            spouseOccupation: x.spouseOccupation || null,
+            fatherName: x.fatherName,
+            fatherDob: moment(x.fatherDob.$d).format('DD/MM/YYYY'),
+            fatherOccupation: x.fatherOccupation,
+            fatherAddress: x.fatherAddress,
+            motherName: x.motherName,
+            motherDob: moment(x.motherDob.$d).format('DD/MM/YYYY') ,
+            motherOccupation: x.motherOccupation,
+            motherAddress: x.motherAddress,
+          }))
+
+          dispatch(Tab(8))
+        })
+
+        console.log(database);
     }
+
+    const handleOk = () =>{
+      child.validateFields({ validateOnly: true})
+      .then((x) => {
+        dispatch(childDetails({
+          childName: x.childName || null,
+          childDob: x.childDob ? moment(x.childDob.$d).format('DD/MM/YYYY') : null,
+          childGender: x.childGender
+        }))
+        // setSubmittable(true);
+        setIsModalOpen(false);
+        console.log(database);
+      })
+      .catch((e) => {
+        console.log(e);
+        alert('Fill the required field for this child')
+        setSubmittable(false)
+      })
+    }
+
+    const handleCancel = () =>{
+      setIsModalOpen(false)
+    }
+
+    // childName: action.payload.childName,
+    // childDob: action.payload.childDob,
+    // childGender:  action.payload.childGender 
     return(
           <div className="container">
             <Form className="family" form={form} layout="vertical">
                <Title level={3}> Family Info </Title>
+               {/* <p>{JSON.stringify(database)}</p> */}
                <Row justify="space-between" gutter={[10, 0]}>
                     <Col flex="100%">
                     <Form.Item name="maritalStatus" label="Marital Status" rules={[{ required: true }]}>
@@ -60,7 +119,7 @@ const Family = () =>{
                             <Row gutter={[10, 10]}>
 
                                     <Col flex="100%" >
-                                        <Form.Item label="Spouse Name" name="FullName" rules={[{  required: true }]}>    
+                                        <Form.Item label="Spouse Name" name="spouseName" rules={[{  required: true }]}>    
                                           <Input placeholder="" />
                                         </Form.Item>
                                     </Col>
@@ -87,21 +146,27 @@ const Family = () =>{
                                             </Form.Item>
                                     </Col>
 
-                                    <Col flex="100%" >
-                                        <Form.Item label="Spouse Occupation"  name="occupation" rules={[{  required: true }]}>    
+                                    <Col flex="50%" >
+                                        <Form.Item label="Spouse Occupation"  name="spouseOccupation" rules={[{  required: true }]}>    
                                           <Input placeholder='Spouse Job / Occupation'/>
                                         </Form.Item>
                                     </Col>
 
+                                    <Col flex="50%">
+ 
+                                      <Form.Item label="Children"> 
+                                          <Button onClick={() => setIsModalOpen(true)} type={'primary'} style={{width: '100%',alignSelf: 'left', justifySelf: "flex-start"}}>+ Add Child</Button>
+                                      </Form.Item>
+                                    </Col>
+
                             </Row>
+
                         )
                     }
 
 
-                    <Col flex="100%">
-                            <Button>+ Add Child</Button>
 
-                    </Col>
+
                 </Row>
 
 
@@ -111,25 +176,26 @@ const Family = () =>{
                   <Title level={3}> Father's Info </Title>
                 </Col>
                 <Col flex="50%" >
-                 <Form.Item label="Full Name" name="FullName" rules={[{  required: true }]}>    
+                 <Form.Item label="Full Name" name="fatherName" rules={[{  required: true }]}>    
                    <Input placeholder="" />
                   </Form.Item>
+
                 </Col>
 
                 <Col flex="50%">
-                 <Form.Item label="Date Of Birth" name="Dob" rules={[{  required: true }]}>
+                 <Form.Item label="Date Of Birth" name="fatherDob" rules={[{  required: true }]}>
                     <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
                 <Col flex="50%" >
-                    <Form.Item label="Occupation" name="occupation" rules={[{  required: true }]}>
+                    <Form.Item label="Occupation" name="fatherOccupation" rules={[{  required: true }]}>
                      <Input placeholder="Work / Job" required/>
                     </Form.Item>
                 </Col>
 
                 <Col flex="50%" >
-                 <Form.Item label="Address" name="Address" rules={[{  required: true }]}>    
+                 <Form.Item label="Address" name="fatherAddress" rules={[{  required: true }]}>    
                    <Input placeholder="" />
                   </Form.Item>
                 </Col>
@@ -138,7 +204,7 @@ const Family = () =>{
                   <Title level={3}>Mother's Info </Title>
                 </Col>
                 <Col flex="50%" >
-                 <Form.Item label="Full Name" name="motherFullName" rules={[{  required: true }]}>    
+                 <Form.Item label="Full Name" name="motherName" rules={[{  required: true }]}>    
                    <Input placeholder="" />
                   </Form.Item>
                 </Col>
@@ -156,11 +222,54 @@ const Family = () =>{
                 </Col>
 
                 <Col flex="50%" >
-                 <Form.Item label="Address" name={sameAddress ? "Address" :"motherAddress"} rules={[{  required: true }]}>    
+                 <Form.Item label="Address" name="motherAddress" rules={[{  required: true }]}>    
                    <Input placeholder="" />
                   </Form.Item>
                 </Col>
             </Row>
+
+            <Modal title="Child" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                          
+                          <Form form={child} layout="vertical">
+                            <Col flex="50%" >
+                              <Form.Item label="Full Name" name="childName" rules={[{  required: true }]}>    
+                                <Input placeholder="Olabode Daniel" />
+                              </Form.Item>
+                            </Col>
+
+                            <Col flex="50%" >
+                              <Form.Item label="Dob" name="childDob" rules={[{  required: true }]}>    
+                               <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                              </Form.Item>
+                            </Col>
+
+
+                            <Col flex="50%">
+                                <Form.Item name="childGender" label="Gender" rules={[{  required: true }]}>
+                                  <Select
+                                  
+         
+                                    style={{  width: "100%", textAlign: 'left' }} 
+                                    options={[
+                                        {
+                                        value: 'Male',
+                                        label: 'Male',
+                                        },
+                                        {
+                                            value: 'Female',
+                                            label: 'Female',
+                                        }
+                                    ]}
+                                  >
+
+                                  </Select>
+                                  </Form.Item>
+                            </Col>
+
+
+                          </Form>
+
+                  </Modal>
 
             <Row justify="space-between">
                 <Col>

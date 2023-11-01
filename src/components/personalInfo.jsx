@@ -28,7 +28,7 @@ const PersonalInfo = () => {
           dispatch(personal({
              fullname: x.fullName,
              phone:  x.phone,
-             dob: x.dob,
+             dob: moment(x.dob.$d).format('DD/MM/YYYY') ,
              gender: x.gender,
              cityOfBirth: x.placeofBirth,
              address: x.address

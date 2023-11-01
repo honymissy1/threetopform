@@ -81,11 +81,11 @@ const Occupation = () =>{
       }
 
       const handlePrev = () =>{
-        dispatch(Tab(4))
+        dispatch(Tab(5))
       }
 
       const handleNext = () =>{
-        dispatch(Tab(6))
+        dispatch(Tab(7))
       }
 
 

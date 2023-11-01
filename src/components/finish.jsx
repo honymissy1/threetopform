@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '../reducer/TabReducer';
 import db from '../firebaseConfig';
 import {  started } from '../reducer/DatabaseReducer';
-
+import image from '../assets/correct.gif'
 
 const Finish = () =>{  
   const { Title, Text } = Typography;
@@ -22,13 +22,11 @@ const Finish = () =>{
   return (
     <div className='container'>
       <div style={{width: '70vw', margin: '0px auto'}}>
+        <div style={{width: '100%', overflow: 'hidden'}}>
+         <img src={image} alt="" />
 
-       <Title level={2}>Application Data Submission Completed</Title>
-        <Text>
-          If you're travelling with anyone click the button below to fill there data
-        </Text>
-         <br /><br /> 
-        <Button type={'dashed'}>Start Form Submission for travel partner</Button>
+        </div>
+       <Title level={5}>Application Data Submission Completed</Title>
       </div>
 
       <br />

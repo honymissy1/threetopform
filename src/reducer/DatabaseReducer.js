@@ -17,15 +17,9 @@ let data = {
     applications: []
   },
   travelDetails: [],
-    //  [
-    //   {
-    //    country: null,
-    //    purpose: null,
-    //    from: null,
-    //    to: null
-    // }]
    education: [],
    jobs: [], 
+
    family: {
     maritalStatus: null,
     spouseName: null,
@@ -34,13 +28,7 @@ let data = {
     divorceDate: null,
     spouseOccupation: null,
     numberOfChildren: null,
-    children: []
-    //  [{
-    //   name: null,
-    //   dateOfBirth: null,
-    //   relationship: null
-    // }]
-    ,
+    
     father: {
      name: null,
      dateOfBirth: null,
@@ -53,8 +41,9 @@ let data = {
      dateOfBirth: null,
      occupation: null,
      address: null
-   }
- },
+   },
+  },
+  childDetail: [],
  
  files: []
 };
@@ -68,7 +57,6 @@ export const Database = createSlice({
           state.user.passportNumber = action.payload.passportNumber;
           state.user.issueDate = action.payload.issueDate;
           state.user.expiryDate = action.payload.expiryDate;
-         
         },
 
         personal: (state, action) =>{
@@ -77,7 +65,7 @@ export const Database = createSlice({
            phone:  action.payload.phone,
            dob: action.payload.dob,
            gender: action.payload.gender,
-           cityOfBirth: action.payload.placeofBirth,
+           cityOfBirth: action.payload.cityOfBirth,
            address: action.payload.address
           }
         },
@@ -142,18 +130,64 @@ export const Database = createSlice({
               }
             ]
           }
-        }
+        },
+
+        familyDetails: (state, action) =>{
+          state.user = { ...state.user, 
+           family: {
+            maritalStatus: action.payload.maritalStatus,
+            spouseName: action.payload.spouseName,
+            spouseDob: action.payload.spouseDob,
+            marriageDate: action.payload.marriageDate,
+            divorceDate: action.payload.divorceDate,
+            spouseOccupation: action.payload.spouseOccupation,
+
+            father: {
+              name: action.payload.fatherName,
+              dateOfBirth: action.payload.fatherDob,
+              occupation: action.payload.fatherOccupation,
+              address: action.payload.fatherAddress
+            },
+
+            mother: {
+              name: action.payload.motherName,
+              dateOfBirth: action.payload.motherDob,
+              occupation: action.payload.motherOccupation,
+              address: action.payload.motherAddress
+            } 
+           }           
+          }
+        },
+
+        childDetails: (state, action) =>{
+          state.user = { ...state.user,
+            childDetail: [...state.user.childDetail, 
+              {
+                childName: action.payload.childName,
+                childDob: action.payload.childDob,
+                childGender:  action.payload.childGender 
+              }
+            ]
+          }
+        },
 
 
-
-
-    }
+        filesFunc: (state, action) =>{
+          state.user = {...state.user, 
+           files: [...state.user.files, action.payload]
+         }
+        } 
+      }
 })
 
 export const {  started, personal,
                 application, travels,
                 eductionHistory,
-                occupation } = Database.actions
+                occupation,
+                familyDetails,
+                filesFunc,
+                childDetails
+               } = Database.actions
 export default Database.reducer
 
 

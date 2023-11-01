@@ -85,11 +85,11 @@ const Education = () =>{
       }
 
       const handlePrev = () =>{
-        dispatch(Tab(3))
+        dispatch(Tab(4))
       }
 
       const handleNext = () => {
-        dispatch(Tab(5))
+        dispatch(Tab(6))
       }
 
 
