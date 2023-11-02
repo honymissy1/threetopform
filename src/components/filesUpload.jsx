@@ -17,9 +17,12 @@ const FilesUpload = () => {
     const [fileList, setFileList] = useState([]);
     const [marriageFile, setMarriageFile] = useState([]);
     const [otherList, setOtherList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [imageLoad, setImageLoad] = useState(false)
 
     const database = useSelector((state) => state.Database.user);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
     const handleChange = ({ fileList: newFileList }) =>{
         setFileList(newFileList)
     }
@@ -35,7 +38,9 @@ const FilesUpload = () => {
         new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
+            reader.onload = () =>{
+               console.log('Loading...');
+               resolve(reader.result)};
             reader.onerror = (error) => reject(error);
     });
 
@@ -59,17 +64,20 @@ const FilesUpload = () => {
         const customRequest = async ({ file, onSuccess, onError }) => {
           try {
             // Generate a unique file name (you can use your own logic here)
+            setImageLoad(true)
             const fileName = `${Date.now()}_${file.name}`;
 
             const storageRef = ref(storage, fileName);
             
-
+            
             uploadBytes(storageRef, file)
               .then(snapshot => {
+                setImageLoad(false)
                 return getDownloadURL(snapshot.ref)
               })
               .then(downloadURL => {
                 onSuccess();
+                setImageLoad(false)
                 console.log('Download URL', downloadURL)
                 dispatch(filesFunc(downloadURL))
 
@@ -78,6 +86,7 @@ const FilesUpload = () => {
             // Handle the successful upload
           } catch (error) {
             // Handle upload error
+            setImageLoad(false)
             onError(error);
             handleRemove(file)
             alert('File Upload Failed')
@@ -101,20 +110,30 @@ const FilesUpload = () => {
 
 
           const handleFinish = async () =>{
- 
+            setLoading(true)
             try{
               const docRef = await addDoc(collection(db, "users"),  database);
               console.log("Document written with ID: ", docRef.id);
-              dispatch(Tab(9))
+              setLoading(false)
+              dispatch(Tab(9));
+
             }catch(err){
-              console.log(err);
+              setLoading(false)
+              alert(err);
             }
           }
 
 
     return (
         <div className="container">
-
+          {
+            loading && (
+              <div className="absolute">
+                <h2 style={{color: 'white'}}>Loading...</h2>
+              </div>
+            )
+          }
+          <h1>{imageLoad ? 'Loading Image..': ''}</h1>
           <div className="file">
 
             <div className='outer'>
@@ -136,7 +155,7 @@ const FilesUpload = () => {
             </div>
 
             {
-              database?.family?.maritalStatus && (
+              database?.family?.maritalStatus !== "Single" && (
                 <div  className='outer'>
                     <h3>Marriage Documents </h3>
                     <>
@@ -176,7 +195,7 @@ const FilesUpload = () => {
                   <Button className='button'>Prev</Button>
                 </Col>
 
-                <Col><Button onClick={handleFinish} htmlType="submit" className='button'>Finish</Button></Col>
+                <Col><Button onClick={handleFinish} disabled={imageLoad} htmlType="submit" className='button'>Finish</Button></Col>
             </Row>
         </div>
       );
