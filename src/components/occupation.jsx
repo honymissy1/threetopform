@@ -33,7 +33,6 @@ const Occupation = () =>{
 
     }, [formValues])
 
-
     const handleWork = (x) =>{
        if(x === 'Yes'){
         setIsModalOpen(true)

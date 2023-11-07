@@ -23,14 +23,13 @@ const App = () => {
   <Tabs className='tabs'
     defaultActiveKey="1"
     activeKey={String(TabNumber.value)}
-    onTabClick={(x) => dispatch(Tab(String(x)))}
+    // onTabClick={(x) => dispatch(Tab(String(x)))}
     animated={{tabPane: true}}
     items={[
       {
         label: 'Start Application',
         key: '1',
         children: <GetStarted />,
-        disabled: doSomething
       },
       {
         label: 'Personal Profile',
@@ -66,7 +65,7 @@ const App = () => {
         label: 'Family',
         key: '7',
         children: <Family />,
-        // disabled: true
+
 
       },
 
