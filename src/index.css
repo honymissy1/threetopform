@@ -33,6 +33,10 @@ a{
   padding: 10px;
 }
 
+body{
+  
+}
+
 .container{
   background:rgb(175, 255, 255);
   background-image: url('./assets/image.jpg');
