@@ -124,7 +124,7 @@ const Family = () =>{
                                     </Col>
                                    <Col flex="50%">
                                     <Form.Item label="Marriage Date" name="marriageDate" rules={[{  required: true }]}>
-                                        <DatePicker style={{width: '100%'}} placeholder='Date' />
+                                        <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date' />
                                     </Form.Item>
                                     </Col>
 
@@ -132,7 +132,7 @@ const Family = () =>{
                                         formValues?.maritalStatus === 'Divorced' && (
                                             <Col flex="50%">
                                             <Form.Item label="Divorce Date" name="divorceDate" rules={[{  required: true }]}>
-                                                <DatePicker style={{width: '100%'}} placeholder='Date' />
+                                                <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date' />
                                             </Form.Item>
                                             </Col>
                                         )
@@ -141,7 +141,7 @@ const Family = () =>{
                                     
                                     <Col flex="50%">
                                             <Form.Item label="Spouse DOB" name="spouseDob" rules={[{  required: true }]}>
-                                                <DatePicker style={{width: '100%'}} placeholder='Spouse Date of Birth' />
+                                                <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Spouse Date of Birth' />
                                             </Form.Item>
                                     </Col>
 
@@ -183,7 +183,7 @@ const Family = () =>{
 
                 <Col flex="50%">
                  <Form.Item label="Date Of Birth" name="fatherDob" rules={[{  required: true }]}>
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
@@ -210,7 +210,7 @@ const Family = () =>{
 
                 <Col flex="50%">
                  <Form.Item label="Date Of Birth" name="motherDob" rules={[{  required: true }]}>
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
@@ -238,7 +238,7 @@ const Family = () =>{
 
                             <Col flex="50%" >
                               <Form.Item label="Dob" name="childDob" rules={[{  required: true }]}>    
-                               <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                               <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
                               </Form.Item>
                             </Col>
 

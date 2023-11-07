@@ -151,13 +151,13 @@ const TravelHistory = () => {
                     
                    <Col flex="50%">
                         <Form.Item name="from" label="From"  rules={[{  required: true }]}>
-                          <DatePicker style={{width: '100%'}}  />
+                          <DatePicker keyboard={false} style={{width: '100%'}}  />
                         </Form.Item>
                     </Col>
 
                     <Col flex="50%">
                         <Form.Item name="to" label="To"  rules={[{  required: true }]}>
-                          <DatePicker style={{width: '100%'}} />
+                          <DatePicker keyboard={false} style={{width: '100%'}} />
                         </Form.Item>
                     </Col>
 

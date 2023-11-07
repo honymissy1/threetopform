@@ -84,7 +84,7 @@ const PersonalInfo = () => {
 
                 <Col flex="50%">
                  <Form.Item label="Date Of Birth" name="dob" rules={[{  required: true }]}>
-                    <DatePicker  onChange={dateChange} style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker keyboard={false} onChange={dateChange} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 

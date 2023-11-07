@@ -40,7 +40,7 @@ const ParentInfo = () => {
 
                 <Col flex="50%">
                  <Form.Item label="Date Of Birth" name="Dob" rules={[{  required: true }]}>
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 

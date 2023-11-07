@@ -48,13 +48,13 @@ const PassportInfo = () => {
 
                 <Col flex="50%">
                  <Form.Item label="Issue Date">
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
                 <Col flex="50%">
                  <Form.Item label="Expiry Date">
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
