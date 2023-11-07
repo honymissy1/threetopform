@@ -69,6 +69,8 @@ const Family = () =>{
         // setSubmittable(true);
         setIsModalOpen(false);
         console.log(database);
+
+        child.resetFields();
       })
       .catch((e) => {
         console.log(e);
@@ -146,7 +148,7 @@ const Family = () =>{
                                     </Col>
 
                                     <Col flex="50%" >
-                                        <Form.Item label="Spouse Occupation"  name="spouseOccupation" rules={[{  required: true }]}>    
+                                        <Form.Item label="Occupation"  name="spouseOccupation" rules={[{  required: true }]}>    
                                           <Input placeholder='Spouse Job / Occupation'/>
                                         </Form.Item>
                                     </Col>

@@ -134,7 +134,7 @@ const Education = () =>{
                     <Row justify="space-between" gutter={[10, 0]}>
 
                 <Col flex="100%">
-                    <Form.Item name="school" label="Country">
+                    <Form.Item name="school" label="Institution">
                         <Input placeholder="School" />
                     </Form.Item>
                 </Col>

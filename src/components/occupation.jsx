@@ -142,7 +142,7 @@ const Occupation = () =>{
                 </Col>
 
                 <Col flex="50%">
-                    <Form.Item name="jobTitle" label="Job Description" rules={[{  required: true }]} tooltip="What you do in the Job e.g As a sales manager I ensure better sale">
+                    <Form.Item name="jobTitle" label="Description" rules={[{  required: true }]} tooltip="What you do in the Job e.g As a sales manager I ensure better sale">
                         <Input placeholder="I manage sales in the company" />
                     </Form.Item>
 
