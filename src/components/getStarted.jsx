@@ -87,14 +87,14 @@ const GetStarted = () =>{
 
                       <Col flex="50%">
                         <Form.Item name="from" label="From"  rules={[{  required: true }]}>
-                          <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Issue Date' />
+                          <DatePicker format={'DD/MM/YYYY'} keyboard={false} style={{width: '100%'}} placeholder='Issue Date' />
                         </Form.Item>
                   
                       </Col>
 
                       <Col flex="50%">
                         <Form.Item name="to" label="To"  rules={[{  required: true }]}>
-                          <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Expiry Date' />
+                          <DatePicker format={'DD/MM/YYYY'} keyboard={false} style={{width: '100%'}} placeholder='Expiry Date' />
                         </Form.Item>
                   
                       </Col>

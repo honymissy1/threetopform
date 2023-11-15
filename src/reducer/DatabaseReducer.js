@@ -45,7 +45,7 @@ let data = {
   },
   childDetail: [],
  
- files: []
+  files: []
 };
 
 
@@ -174,7 +174,12 @@ export const Database = createSlice({
 
         filesFunc: (state, action) =>{
           state.user = {...state.user, 
-           files: [...state.user.files, action.payload]
+           files: [...state.user.files, 
+            {
+             url: action.payload.url, 
+             ext: action.payload.ext
+            }
+          ]
          }
         } 
       }

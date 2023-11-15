@@ -16,6 +16,8 @@ const FilesUpload = () => {
 
     const [fileList, setFileList] = useState([]);
     const [marriageFile, setMarriageFile] = useState([]);
+    const [workFile, setWorkFile] = useState([]);
+    const [schoolFile, setSchoolFile] = useState([]);
     const [otherList, setOtherList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [imageLoad, setImageLoad] = useState(false)
@@ -34,6 +36,15 @@ const FilesUpload = () => {
     const handleChange2 = ({ fileList: newFileList }) =>{
         setOtherList(newFileList)
     }
+
+    const handleChange3 = ({ fileList: newFileList }) =>{
+      setSchoolFile(newFileList)
+    }
+
+    const handleChange4 = ({ fileList: newFileList }) =>{
+      setWorkFile(newFileList)
+    }
+
     const getBase64 = (file) =>
         new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -59,6 +70,11 @@ const FilesUpload = () => {
             setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
           };
 
+          const getFileExtension = (filename) => {
+            return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+          };
+          
+
 
 
         const customRequest = async ({ file, onSuccess, onError }) => {
@@ -66,21 +82,22 @@ const FilesUpload = () => {
             // Generate a unique file name (you can use your own logic here)
             setImageLoad(true)
             const fileName = `${Date.now()}_${file.name}`;
-
+            const fileExtension = getFileExtension(file.name);
             const storageRef = ref(storage, fileName);
             
             
             uploadBytes(storageRef, file)
               .then(snapshot => {
+
                 setImageLoad(false)
                 return getDownloadURL(snapshot.ref)
               })
               .then(downloadURL => {
                 onSuccess();
-                setImageLoad(false)
-                console.log('Download URL', downloadURL)
-                dispatch(filesFunc(downloadURL))
-
+                const fileExtension = getFileExtension(file.name);
+                setImageLoad(false);
+                console.log({url: downloadURL, ext: fileExtension})
+                dispatch(filesFunc({url: downloadURL, ext: fileExtension}))
               })
 
             // Handle the successful upload
@@ -90,7 +107,7 @@ const FilesUpload = () => {
             onError(error);
             handleRemove(file)
             alert('File Upload Failed')
-            console.error(error);
+            console.log(error);
           }
         }
 
@@ -120,6 +137,7 @@ const FilesUpload = () => {
             }catch(err){
               setLoading(false)
               alert(err);
+              console.log(err);
             }
           }
 
@@ -172,6 +190,44 @@ const FilesUpload = () => {
                 </div>
               )
             }
+
+           {
+              database?.jobs.length > 0 && (
+                <div  className='outer'>
+                    <h3>Work Job Documents </h3>
+                    <>
+                        <Upload
+                            customRequest={customRequest}
+                            listType="picture-card"
+                            fileList={workFile}
+                            onPreview={handlePreview}
+                            onChange={handleChange4}
+                        >
+                            {fileList.length >= 30 ? null : uploadButton}
+                        </Upload>
+                    </>
+                </div>
+              )
+            }
+
+{
+              database?.education.length > 0 && (
+                <div  className='outer'>
+                    <h3>Educational Institution Documents </h3>
+                    <>
+                        <Upload
+                            customRequest={customRequest}
+                            listType="picture-card"
+                            fileList={schoolFile}
+                            onPreview={handlePreview}
+                            onChange={handleChange3}
+                        >
+                            {fileList.length >= 30 ? null : uploadButton}
+                        </Upload>
+                    </>
+                </div>
+              )
+            }
             
 
             <div className='outer'>
@@ -184,7 +240,7 @@ const FilesUpload = () => {
                         onPreview={handlePreview}
                         onChange={handleChange2}
                     >
-                        {fileList.length >= 15 ? null : uploadButton}
+                        {fileList.length >= 30 ? null : uploadButton}
                     </Upload>
                 </>
                 

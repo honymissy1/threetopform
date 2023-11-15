@@ -162,7 +162,7 @@ const ApplicationHistory = () => {
 
               <Col flex="50%">
                   <Form.Item name="applicationDate" label="Date" tooltip="The date you started the application">
-                    <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Application' />
+                    <DatePicker format={'DD/MM/YYYY'} keyboard={false} style={{width: '100%'}} placeholder='Date of Application' />
                   </Form.Item>
               </Col>
 
@@ -189,13 +189,13 @@ const ApplicationHistory = () => {
                   <Row gutter={[10, 0]}>
                     <Col flex="50%">
                       <Form.Item name="issueDate" label="Issue Date"  rules={[{  required: true }]}>
-                        <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Issue Date' />
+                        <DatePicker format={'DD/MM/YYYY'} keyboard={false} style={{width: '100%'}} placeholder='Issue Date' />
                       </Form.Item>
                     </Col>
 
                     <Col flex="50%">
                       <Form.Item name="expiryDate" label="Expiry Date"  rules={[{  required: true }]}>
-                        <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Expiry Date' />
+                        <DatePicker format={'DD/MM/YYYY'} keyboard={false} style={{width: '100%'}} placeholder='Expiry Date' />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -206,7 +206,7 @@ const ApplicationHistory = () => {
                 <Row gutter={[0, 10]}>
                   <Col flex="100%">
                       <Form.Item name="denialDate" label="Denial Date">
-                        <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Denial Date' />
+                        <DatePicker format={'DD/MM/YYYY'} keyboard={false} style={{width: '100%'}} placeholder='Denial Date' />
                       </Form.Item>
                   </Col>
                   <Col flex="100%"> 

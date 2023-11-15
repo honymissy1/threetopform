@@ -40,7 +40,7 @@ const ParentInfo = () => {
 
                 <Col flex="50%">
                  <Form.Item label="Date Of Birth" name="Dob" rules={[{  required: true }]}>
-                    <DatePicker keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker format={'DD/MM/YYYY'} keyboard={false} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 
@@ -69,7 +69,7 @@ const ParentInfo = () => {
 
                 <Col flex="50%">
                  <Form.Item label="Date Of Birth" name="motherDob" rules={[{  required: true }]}>
-                    <DatePicker style={{width: '100%'}} placeholder='Date of Birth' />
+                    <DatePicker format={'DD/MM/YYYY'} style={{width: '100%'}} placeholder='Date of Birth' />
                   </Form.Item>
                 </Col>
 

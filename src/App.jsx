@@ -23,7 +23,7 @@ const App = () => {
   <Tabs className='tabs'
     defaultActiveKey="1"
     activeKey={String(TabNumber.value)}
-    // onTabClick={(x) => dispatch(Tab(String(x)))}
+    onTabClick={(x) => dispatch(Tab(String(x)))}
     animated={{tabPane: true}}
     items={[
       {

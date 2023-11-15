@@ -71,7 +71,12 @@ body{
   .container form {
     font-weight: bolder; 
      width: 100%;
-     margin: 0px auto
+     margin: 0px auto;
+     padding: 0;
+  }
+
+  .container {
+    padding: 10px
   }
 }
 
