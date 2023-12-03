@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { collection, addDoc, query, getDocs, where } from "firebase/firestore";
+import { collection, addDoc, query, getDocs, where, serverTimestamp } from "firebase/firestore";
 import db from '../firebaseConfig';
 
 
@@ -45,7 +45,9 @@ let data = {
   },
   childDetail: [],
  
-  files: []
+  files: [],
+  status: 'Todo',
+  timestamp: serverTimestamp()
 };
 
 

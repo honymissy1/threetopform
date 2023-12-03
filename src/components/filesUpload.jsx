@@ -129,7 +129,7 @@ const FilesUpload = () => {
           const handleFinish = async () =>{
             setLoading(true)
             try{
-              const docRef = await addDoc(collection(db, "users"),  database);
+              const docRef = await addDoc(collection(db, "users"), database);
               console.log("Document written with ID: ", docRef.id);
               setLoading(false)
               dispatch(Tab(9));
