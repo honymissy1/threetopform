@@ -60,7 +60,7 @@ const Occupation = () =>{
             position: x.position,
             jobTitle: x.jobTitle,
             from: moment(x.from.$d).format('DD/MM/YYYY'),
-            to: moment(x.from.$d).format('DD/MM/YYYY'),
+            to: moment(x.to.$d).format('DD/MM/YYYY'),
             jobAddress: x.jobAddress
            }))
 
